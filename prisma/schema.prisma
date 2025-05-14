@@ -10,6 +10,37 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Artist {
+	id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  aboriginalName  String?
+  tribe           String?
+  region          String?
+  biography       String
+  birthYear       Int?
+  deathYear       Int?
+  isAlive         Boolean       @default(true)
+  artStyles       String[]
+  profileImage    String?
+  artefacts       Artefact[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Artefact {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  artist          Artist        @relation(fields: [artistId], references: [id])
+  artistId        String        @db.ObjectId
+  creationYear    Int?
+  description     String?
+  dimensions      Json?
+  artStyle        String
+  imageUrl        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
