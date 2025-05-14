@@ -1,11 +1,11 @@
 import Express, { Request, Response } from 'express';
-// import indexRoute from './routes';
+import indexRoute from './routes';
 
 // Initiate express
 const app = Express();
 app.use(Express.json());
 
-// app.use(indexRoute);
+app.use(indexRoute);
 
 
 const port = process.env.PORT || 3000;

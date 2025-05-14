@@ -113,16 +113,66 @@ Prisma.NullTypes = {
  * Enums
  */
 
-exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable'
-});
+exports.Prisma.ArtistScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  aboriginalName: 'aboriginalName',
+  tribe: 'tribe',
+  region: 'region',
+  biography: 'biography',
+  birthYear: 'birthYear',
+  deathYear: 'deathYear',
+  artStyles: 'artStyles',
+  imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ArtefactScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  artistId: 'artistId',
+  exhibitionIds: 'exhibitionIds',
+  creationYear: 'creationYear',
+  description: 'description',
+  dimensions: 'dimensions',
+  artStyle: 'artStyle',
+  imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExhibitionScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  theme: 'theme',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  isCurrentlyActive: 'isCurrentlyActive',
+  location: 'location',
+  artefactIds: 'artefactIds',
+  imageUrl: 'imageUrl',
+  admissionFee: 'admissionFee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
 
 
 exports.Prisma.ModelName = {
-
+  Artist: 'Artist',
+  Artefact: 'Artefact',
+  Exhibition: 'Exhibition'
 };
 
 /**
