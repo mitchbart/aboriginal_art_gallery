@@ -8,6 +8,6 @@ indexRoute.get('', async (req, res) => {
   res.json({ message: 'Hello there' });
 });
 
-indexRoute.use('/users', artistRoute);
+indexRoute.use('/artists', artistRoute);
 
 export default indexRoute;

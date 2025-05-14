@@ -10,8 +10,8 @@ import {
 // Artist layout Route
 const artistRoute = Router();
 
-artistRoute.get('', getArtist);
-artistRoute.get('/:userid', getArtists);
+artistRoute.get('', getArtists);
+artistRoute.get('/:userid', getArtist);
 artistRoute.post('', createArtist);
 artistRoute.patch('/:userid', updateArtist);
 artistRoute.delete('/:userid', deleteArtist);
