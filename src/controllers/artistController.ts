@@ -5,7 +5,11 @@ import prisma from "../client";
 export async function getArtists(req: Request, res: Response) {
   try {
     // Find all artists and return
-    const artists = await prisma.artist.findMany();
+    const artists = await prisma.artist.findMany({
+      include: {
+        artefacts: true,
+      },
+    });
     res.json({
       status: true,
       message: "Artists successfully fetched",
@@ -29,7 +33,10 @@ export async function getArtist(req: Request, res: Response) {
     const artist = await prisma.artist.findFirst({
       where: {
         id: artistid,
-      }
+      },
+      include: {
+        artefacts: true,
+      },
     });
     // If no artist found, return 404 not found
     if (!artist) {
