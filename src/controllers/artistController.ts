@@ -3,29 +3,56 @@ import prisma from "../client";
 
 // Get all artists
 export async function getArtists(req: Request, res: Response) {
-  const artists = await prisma.artist.findMany();
-
-  res.json({
-    status: true,
-    message: "Artists successfully fetched",
-    data: artists,
-  });
+  try {
+    // Find all artists and return
+    const artists = await prisma.artist.findMany();
+    res.json({
+      status: true,
+      message: "Artists successfully fetched",
+      data: artists,
+    });
+  } catch (error) {
+    // Catch any other errors and output to console
+    console.error(error);
+    res.status(500).json({
+      status: false,
+      message: 'Unknown error while fetching artists'
+    });
+  }
 }
 
 // Get a singular artist
 export async function getArtist(req: Request, res: Response) {
-  const { artistid } = req.params;
-  const artist = await prisma.artist.findFirst({
-    where: {
-      id: artistid,
-    },
-  });
-
-  res.json({
-    status: true,
-    message: "Artist successfully fetched",
-    data: artist,
-  });
+  try {
+    const { artistid } = req.params;
+    // Find artist based on id
+    const artist = await prisma.artist.findFirst({
+      where: {
+        id: artistid,
+      }
+    });
+    // If no artist found, return 404 not found
+    if (!artist) {
+      res.status(404).json({
+        status: false,
+        message: "Artist not found",
+      })
+      return;
+    }
+    // Artist response
+    res.json({
+      status: true,
+      message: "Artist successfully fetched",
+      data: artist,
+    });
+  } catch (error) {
+    // Catch any other errors and output to console
+    console.error(error);
+    res.status(500).json({
+      status: false,
+      message: 'Unknown error fetching artist'
+    });
+  }
 }
 
 // Add a new artist
@@ -34,17 +61,17 @@ export async function createArtist(req: Request, res: Response) {
     const artist = await prisma.artist.create({
       data: req.body,
     });
-
+    // Return status 201 created
     res.status(201).json({
       status: true,
       message: "Artist successfully created",
       data: artist,
     });
-
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       status: false,
-      message: 'server error'
+      message: 'Unknown error adding new artist'
     });
   }
 }
@@ -60,14 +87,12 @@ export async function updateArtist(req: Request, res: Response) {
       }
     });
 
-    // Why doesnt this work? Look into it once everything is up and running
-    // const artist = await getArtist(req, res);
-
     if (!artist) {
-      res.status(401).json({
+      res.status(404).json({
         status: false,
         message: 'Artist not found',
       });
+      return;
     }
 
     const updatedArtist = await prisma.artist.update({
@@ -84,10 +109,10 @@ export async function updateArtist(req: Request, res: Response) {
     });
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({
       status: false,
-      message: 'server error',
+      message: 'Error updating artist',
     });
   }
 }
@@ -103,10 +128,11 @@ export async function deleteArtist(req: Request, res: Response) {
     });
 
     if (!artist) {
-      res.status(401).json({
+      res.status(404).json({
         status: false,
         message: 'Artist not found',
       });
+      return;
     }
 
     await prisma.artist.delete({
@@ -120,10 +146,11 @@ export async function deleteArtist(req: Request, res: Response) {
       message: 'Artist successfully deleted',
     });
 
-  } catch {
+  } catch (error) {
+    console.error(error);
     res.status(501).json({
       status: false,
-      message: 'server error',
+      message: 'Error deleting artist',
     });
   }
 }
