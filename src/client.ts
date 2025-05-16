@@ -5,6 +5,7 @@ import { PrismaClient } from '../generated/prisma';
 //const prisma = new PrismaClient();
 
 // Exhibitions isCurrentlyActive has been made a computed field by prisma
+// Prisma computed fields - https://www.prisma.io/docs/orm/prisma-client/queries/computed-fields
 const prisma = new PrismaClient().$extends({
   result: {
     exhibition: {

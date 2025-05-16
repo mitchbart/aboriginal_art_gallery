@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   getExhibitions,
+  getActiveExhibitions,
   getExhibition,
   createExhibition,
   updateExhibition,
@@ -13,6 +14,7 @@ import { createExhibitionSchema, updateExhibitionSchema } from '../schemas/exhib
 const exhibitionRoute = Router();
 
 exhibitionRoute.get('', getExhibitions);
+exhibitionRoute.get('/active', getActiveExhibitions);
 exhibitionRoute.get('/:exhibitionid', getExhibition);
 exhibitionRoute.post('', validateSchema(createExhibitionSchema), createExhibition);
 exhibitionRoute.patch('/:exhibitionid', validateSchema(updateExhibitionSchema), updateExhibition);
