@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Dimensions
+ * 
+ */
+export type Dimensions = $Result.DefaultSelection<Prisma.$DimensionsPayload>
+/**
  * Model Artist
  * 
  */
@@ -1096,6 +1101,77 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model Dimensions
+   */
+
+
+
+
+
+  export type DimensionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    height?: boolean
+    width?: boolean
+    depth?: boolean
+    unit?: boolean
+  }, ExtArgs["result"]["dimensions"]>
+
+
+
+  export type DimensionsSelectScalar = {
+    height?: boolean
+    width?: boolean
+    depth?: boolean
+    unit?: boolean
+  }
+
+  export type DimensionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"height" | "width" | "depth" | "unit", ExtArgs["result"]["dimensions"]>
+
+  export type $DimensionsPayload = {
+    name: "Dimensions"
+    objects: {}
+    scalars: {
+      height: number
+      width: number
+      depth: number | null
+      unit: string
+    }
+    composites: {}
+  }
+
+  type DimensionsGetPayload<S extends boolean | null | undefined | DimensionsDefaultArgs> = $Result.GetResult<Prisma.$DimensionsPayload, S>
+
+
+
+
+
+  /**
+   * Fields of the Dimensions model
+   */
+  interface DimensionsFieldRefs {
+    readonly height: FieldRef<"Dimensions", 'Float'>
+    readonly width: FieldRef<"Dimensions", 'Float'>
+    readonly depth: FieldRef<"Dimensions", 'Float'>
+    readonly unit: FieldRef<"Dimensions", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dimensions without action
+   */
+  export type DimensionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dimensions
+     */
+    select?: DimensionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dimensions
+     */
+    omit?: DimensionsOmit<ExtArgs> | null
+  }
+
 
   /**
    * Model Artist
@@ -2264,7 +2340,6 @@ export namespace Prisma {
     exhibitionIds: number
     creationYear: number
     description: number
-    dimensions: number
     artStyle: number
     imageUrl: number
     createdAt: number
@@ -2312,7 +2387,6 @@ export namespace Prisma {
     exhibitionIds?: true
     creationYear?: true
     description?: true
-    dimensions?: true
     artStyle?: true
     imageUrl?: true
     createdAt?: true
@@ -2413,7 +2487,6 @@ export namespace Prisma {
     exhibitionIds: string[]
     creationYear: number | null
     description: string | null
-    dimensions: JsonValue | null
     artStyle: string
     imageUrl: string
     createdAt: Date
@@ -2446,7 +2519,7 @@ export namespace Prisma {
     exhibitionIds?: boolean
     creationYear?: boolean
     description?: boolean
-    dimensions?: boolean
+    dimensions?: boolean | DimensionsDefaultArgs<ExtArgs>
     artStyle?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -2465,7 +2538,6 @@ export namespace Prisma {
     exhibitionIds?: boolean
     creationYear?: boolean
     description?: boolean
-    dimensions?: boolean
     artStyle?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -2492,13 +2564,14 @@ export namespace Prisma {
       exhibitionIds: string[]
       creationYear: number | null
       description: string | null
-      dimensions: Prisma.JsonValue | null
       artStyle: string
       imageUrl: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["artefact"]>
-    composites: {}
+    composites: {
+      dimensions: Prisma.$DimensionsPayload | null
+    }
   }
 
   type ArtefactGetPayload<S extends boolean | null | undefined | ArtefactDefaultArgs> = $Result.GetResult<Prisma.$ArtefactPayload, S>
@@ -2897,7 +2970,6 @@ export namespace Prisma {
     readonly exhibitionIds: FieldRef<"Artefact", 'String[]'>
     readonly creationYear: FieldRef<"Artefact", 'Int'>
     readonly description: FieldRef<"Artefact", 'String'>
-    readonly dimensions: FieldRef<"Artefact", 'Json'>
     readonly artStyle: FieldRef<"Artefact", 'String'>
     readonly imageUrl: FieldRef<"Artefact", 'String'>
     readonly createdAt: FieldRef<"Artefact", 'DateTime'>
@@ -3341,7 +3413,6 @@ export namespace Prisma {
     theme: string | null
     startDate: Date | null
     endDate: Date | null
-    isCurrentlyActive: boolean | null
     location: string | null
     imageUrl: string | null
     admissionFee: number | null
@@ -3356,7 +3427,6 @@ export namespace Prisma {
     theme: string | null
     startDate: Date | null
     endDate: Date | null
-    isCurrentlyActive: boolean | null
     location: string | null
     imageUrl: string | null
     admissionFee: number | null
@@ -3371,7 +3441,6 @@ export namespace Prisma {
     theme: number
     startDate: number
     endDate: number
-    isCurrentlyActive: number
     location: number
     artefactIds: number
     imageUrl: number
@@ -3397,7 +3466,6 @@ export namespace Prisma {
     theme?: true
     startDate?: true
     endDate?: true
-    isCurrentlyActive?: true
     location?: true
     imageUrl?: true
     admissionFee?: true
@@ -3412,7 +3480,6 @@ export namespace Prisma {
     theme?: true
     startDate?: true
     endDate?: true
-    isCurrentlyActive?: true
     location?: true
     imageUrl?: true
     admissionFee?: true
@@ -3427,7 +3494,6 @@ export namespace Prisma {
     theme?: true
     startDate?: true
     endDate?: true
-    isCurrentlyActive?: true
     location?: true
     artefactIds?: true
     imageUrl?: true
@@ -3530,7 +3596,6 @@ export namespace Prisma {
     theme: string | null
     startDate: Date
     endDate: Date
-    isCurrentlyActive: boolean
     location: string
     artefactIds: string[]
     imageUrl: string | null
@@ -3565,7 +3630,6 @@ export namespace Prisma {
     theme?: boolean
     startDate?: boolean
     endDate?: boolean
-    isCurrentlyActive?: boolean
     location?: boolean
     artefactIds?: boolean
     imageUrl?: boolean
@@ -3585,7 +3649,6 @@ export namespace Prisma {
     theme?: boolean
     startDate?: boolean
     endDate?: boolean
-    isCurrentlyActive?: boolean
     location?: boolean
     artefactIds?: boolean
     imageUrl?: boolean
@@ -3594,7 +3657,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ExhibitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "theme" | "startDate" | "endDate" | "isCurrentlyActive" | "location" | "artefactIds" | "imageUrl" | "admissionFee" | "createdAt" | "updatedAt", ExtArgs["result"]["exhibition"]>
+  export type ExhibitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "theme" | "startDate" | "endDate" | "location" | "artefactIds" | "imageUrl" | "admissionFee" | "createdAt" | "updatedAt", ExtArgs["result"]["exhibition"]>
   export type ExhibitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     artefacts?: boolean | Exhibition$artefactsArgs<ExtArgs>
     _count?: boolean | ExhibitionCountOutputTypeDefaultArgs<ExtArgs>
@@ -3612,7 +3675,6 @@ export namespace Prisma {
       theme: string | null
       startDate: Date
       endDate: Date
-      isCurrentlyActive: boolean
       location: string
       artefactIds: string[]
       imageUrl: string | null
@@ -4018,7 +4080,6 @@ export namespace Prisma {
     readonly theme: FieldRef<"Exhibition", 'String'>
     readonly startDate: FieldRef<"Exhibition", 'DateTime'>
     readonly endDate: FieldRef<"Exhibition", 'DateTime'>
-    readonly isCurrentlyActive: FieldRef<"Exhibition", 'Boolean'>
     readonly location: FieldRef<"Exhibition", 'String'>
     readonly artefactIds: FieldRef<"Exhibition", 'String[]'>
     readonly imageUrl: FieldRef<"Exhibition", 'String'>
@@ -4466,7 +4527,6 @@ export namespace Prisma {
     exhibitionIds: 'exhibitionIds',
     creationYear: 'creationYear',
     description: 'description',
-    dimensions: 'dimensions',
     artStyle: 'artStyle',
     imageUrl: 'imageUrl',
     createdAt: 'createdAt',
@@ -4483,7 +4543,6 @@ export namespace Prisma {
     theme: 'theme',
     startDate: 'startDate',
     endDate: 'endDate',
-    isCurrentlyActive: 'isCurrentlyActive',
     location: 'location',
     artefactIds: 'artefactIds',
     imageUrl: 'imageUrl',
@@ -4555,20 +4614,6 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4691,7 +4736,7 @@ export namespace Prisma {
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
-    dimensions?: JsonNullableFilter<"Artefact">
+    dimensions?: XOR<DimensionsNullableCompositeFilter, DimensionsObjectEqualityInput> | null
     artStyle?: StringFilter<"Artefact"> | string
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
@@ -4707,7 +4752,7 @@ export namespace Prisma {
     exhibitionIds?: SortOrder
     creationYear?: SortOrder
     description?: SortOrder
-    dimensions?: SortOrder
+    dimensions?: DimensionsOrderByInput
     artStyle?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -4726,7 +4771,7 @@ export namespace Prisma {
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
-    dimensions?: JsonNullableFilter<"Artefact">
+    dimensions?: XOR<DimensionsNullableCompositeFilter, DimensionsObjectEqualityInput> | null
     artStyle?: StringFilter<"Artefact"> | string
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
@@ -4742,7 +4787,6 @@ export namespace Prisma {
     exhibitionIds?: SortOrder
     creationYear?: SortOrder
     description?: SortOrder
-    dimensions?: SortOrder
     artStyle?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -4764,7 +4808,6 @@ export namespace Prisma {
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableWithAggregatesFilter<"Artefact"> | number | null
     description?: StringNullableWithAggregatesFilter<"Artefact"> | string | null
-    dimensions?: JsonNullableWithAggregatesFilter<"Artefact">
     artStyle?: StringWithAggregatesFilter<"Artefact"> | string
     imageUrl?: StringWithAggregatesFilter<"Artefact"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Artefact"> | Date | string
@@ -4781,7 +4824,6 @@ export namespace Prisma {
     theme?: StringNullableFilter<"Exhibition"> | string | null
     startDate?: DateTimeFilter<"Exhibition"> | Date | string
     endDate?: DateTimeFilter<"Exhibition"> | Date | string
-    isCurrentlyActive?: BoolFilter<"Exhibition"> | boolean
     location?: StringFilter<"Exhibition"> | string
     artefactIds?: StringNullableListFilter<"Exhibition">
     imageUrl?: StringNullableFilter<"Exhibition"> | string | null
@@ -4798,7 +4840,6 @@ export namespace Prisma {
     theme?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isCurrentlyActive?: SortOrder
     location?: SortOrder
     artefactIds?: SortOrder
     imageUrl?: SortOrder
@@ -4818,7 +4859,6 @@ export namespace Prisma {
     theme?: StringNullableFilter<"Exhibition"> | string | null
     startDate?: DateTimeFilter<"Exhibition"> | Date | string
     endDate?: DateTimeFilter<"Exhibition"> | Date | string
-    isCurrentlyActive?: BoolFilter<"Exhibition"> | boolean
     location?: StringFilter<"Exhibition"> | string
     artefactIds?: StringNullableListFilter<"Exhibition">
     imageUrl?: StringNullableFilter<"Exhibition"> | string | null
@@ -4835,7 +4875,6 @@ export namespace Prisma {
     theme?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isCurrentlyActive?: SortOrder
     location?: SortOrder
     artefactIds?: SortOrder
     imageUrl?: SortOrder
@@ -4859,7 +4898,6 @@ export namespace Prisma {
     theme?: StringNullableWithAggregatesFilter<"Exhibition"> | string | null
     startDate?: DateTimeWithAggregatesFilter<"Exhibition"> | Date | string
     endDate?: DateTimeWithAggregatesFilter<"Exhibition"> | Date | string
-    isCurrentlyActive?: BoolWithAggregatesFilter<"Exhibition"> | boolean
     location?: StringWithAggregatesFilter<"Exhibition"> | string
     artefactIds?: StringNullableListFilter<"Exhibition">
     imageUrl?: StringNullableWithAggregatesFilter<"Exhibition"> | string | null
@@ -4978,7 +5016,7 @@ export namespace Prisma {
     title: string
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -4994,7 +5032,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -5006,7 +5044,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5021,7 +5059,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5036,7 +5074,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -5047,7 +5085,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5060,7 +5098,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5074,7 +5112,6 @@ export namespace Prisma {
     theme?: string | null
     startDate: Date | string
     endDate: Date | string
-    isCurrentlyActive: boolean
     location: string
     imageUrl?: string | null
     admissionFee?: number | null
@@ -5090,7 +5127,6 @@ export namespace Prisma {
     theme?: string | null
     startDate: Date | string
     endDate: Date | string
-    isCurrentlyActive: boolean
     location: string
     artefactIds?: ExhibitionCreateartefactIdsInput | string[]
     imageUrl?: string | null
@@ -5106,7 +5142,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     admissionFee?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -5121,7 +5156,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     artefactIds?: ExhibitionUpdateartefactIdsInput | string[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5138,7 +5172,6 @@ export namespace Prisma {
     theme?: string | null
     startDate: Date | string
     endDate: Date | string
-    isCurrentlyActive: boolean
     location: string
     artefactIds?: ExhibitionCreateartefactIdsInput | string[]
     imageUrl?: string | null
@@ -5153,7 +5186,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     admissionFee?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -5167,7 +5199,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     artefactIds?: ExhibitionUpdateartefactIdsInput | string[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5368,17 +5399,19 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+  export type DimensionsNullableCompositeFilter = {
+    equals?: DimensionsObjectEqualityInput | null
+    is?: DimensionsWhereInput | null
+    isNot?: DimensionsWhereInput | null
     isSet?: boolean
+  }
+
+  export type DimensionsObjectEqualityInput = {
+    height: number
+    width: number
+    depth?: number | null
+    unit: string
   }
 
   export type ArtistScalarRelationFilter = {
@@ -5392,6 +5425,13 @@ export namespace Prisma {
     none?: ExhibitionWhereInput
   }
 
+  export type DimensionsOrderByInput = {
+    height?: SortOrder
+    width?: SortOrder
+    depth?: SortOrder
+    unit?: SortOrder
+  }
+
   export type ExhibitionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -5403,7 +5443,6 @@ export namespace Prisma {
     exhibitionIds?: SortOrder
     creationYear?: SortOrder
     description?: SortOrder
-    dimensions?: SortOrder
     artStyle?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -5441,26 +5480,6 @@ export namespace Prisma {
   export type ArtefactSumOrderByAggregateInput = {
     creationYear?: SortOrder
   }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
-    isSet?: boolean
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
@@ -5481,7 +5500,6 @@ export namespace Prisma {
     theme?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isCurrentlyActive?: SortOrder
     location?: SortOrder
     artefactIds?: SortOrder
     imageUrl?: SortOrder
@@ -5501,7 +5519,6 @@ export namespace Prisma {
     theme?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isCurrentlyActive?: SortOrder
     location?: SortOrder
     imageUrl?: SortOrder
     admissionFee?: SortOrder
@@ -5516,7 +5533,6 @@ export namespace Prisma {
     theme?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    isCurrentlyActive?: SortOrder
     location?: SortOrder
     imageUrl?: SortOrder
     admissionFee?: SortOrder
@@ -5526,14 +5542,6 @@ export namespace Prisma {
 
   export type ExhibitionSumOrderByAggregateInput = {
     admissionFee?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5626,6 +5634,17 @@ export namespace Prisma {
     deleteMany?: ArtefactScalarWhereInput | ArtefactScalarWhereInput[]
   }
 
+  export type DimensionsNullableCreateEnvelopeInput = {
+    set?: DimensionsCreateInput | null
+  }
+
+  export type DimensionsCreateInput = {
+    height: number
+    width: number
+    depth?: number | null
+    unit: string
+  }
+
   export type ArtistCreateNestedOneWithoutArtefactsInput = {
     create?: XOR<ArtistCreateWithoutArtefactsInput, ArtistUncheckedCreateWithoutArtefactsInput>
     connectOrCreate?: ArtistCreateOrConnectWithoutArtefactsInput
@@ -5646,6 +5665,12 @@ export namespace Prisma {
     create?: XOR<ExhibitionCreateWithoutArtefactsInput, ExhibitionUncheckedCreateWithoutArtefactsInput> | ExhibitionCreateWithoutArtefactsInput[] | ExhibitionUncheckedCreateWithoutArtefactsInput[]
     connectOrCreate?: ExhibitionCreateOrConnectWithoutArtefactsInput | ExhibitionCreateOrConnectWithoutArtefactsInput[]
     connect?: ExhibitionWhereUniqueInput | ExhibitionWhereUniqueInput[]
+  }
+
+  export type DimensionsNullableUpdateEnvelopeInput = {
+    set?: DimensionsCreateInput | null
+    upsert?: DimensionsUpsertInput
+    unset?: boolean
   }
 
   export type ArtistUpdateOneRequiredWithoutArtefactsNestedInput = {
@@ -5701,10 +5726,6 @@ export namespace Prisma {
     create?: XOR<ArtefactCreateWithoutExhibitionsInput, ArtefactUncheckedCreateWithoutExhibitionsInput> | ArtefactCreateWithoutExhibitionsInput[] | ArtefactUncheckedCreateWithoutExhibitionsInput[]
     connectOrCreate?: ArtefactCreateOrConnectWithoutExhibitionsInput | ArtefactCreateOrConnectWithoutExhibitionsInput[]
     connect?: ArtefactWhereUniqueInput | ArtefactWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -5887,30 +5908,15 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    isSet?: boolean
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+  export type DimensionsWhereInput = {
+    AND?: DimensionsWhereInput | DimensionsWhereInput[]
+    OR?: DimensionsWhereInput[]
+    NOT?: DimensionsWhereInput | DimensionsWhereInput[]
+    height?: FloatFilter<"Dimensions"> | number
+    width?: FloatFilter<"Dimensions"> | number
+    depth?: FloatNullableFilter<"Dimensions"> | number | null
+    unit?: StringFilter<"Dimensions"> | string
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5935,7 +5941,7 @@ export namespace Prisma {
     title: string
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -5949,7 +5955,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -5992,7 +5998,6 @@ export namespace Prisma {
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
-    dimensions?: JsonNullableFilter<"Artefact">
     artStyle?: StringFilter<"Artefact"> | string
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
@@ -6041,7 +6046,6 @@ export namespace Prisma {
     theme?: string | null
     startDate: Date | string
     endDate: Date | string
-    isCurrentlyActive: boolean
     location: string
     imageUrl?: string | null
     admissionFee?: number | null
@@ -6056,7 +6060,6 @@ export namespace Prisma {
     theme?: string | null
     startDate: Date | string
     endDate: Date | string
-    isCurrentlyActive: boolean
     location: string
     artefactIds?: ExhibitionCreateartefactIdsInput | string[]
     imageUrl?: string | null
@@ -6068,6 +6071,11 @@ export namespace Prisma {
   export type ExhibitionCreateOrConnectWithoutArtefactsInput = {
     where: ExhibitionWhereUniqueInput
     create: XOR<ExhibitionCreateWithoutArtefactsInput, ExhibitionUncheckedCreateWithoutArtefactsInput>
+  }
+
+  export type DimensionsUpsertInput = {
+    set: DimensionsCreateInput | null
+    update: DimensionsUpdateInput
   }
 
   export type ArtistUpsertWithoutArtefactsInput = {
@@ -6135,7 +6143,6 @@ export namespace Prisma {
     theme?: StringNullableFilter<"Exhibition"> | string | null
     startDate?: DateTimeFilter<"Exhibition"> | Date | string
     endDate?: DateTimeFilter<"Exhibition"> | Date | string
-    isCurrentlyActive?: BoolFilter<"Exhibition"> | boolean
     location?: StringFilter<"Exhibition"> | string
     artefactIds?: StringNullableListFilter<"Exhibition">
     imageUrl?: StringNullableFilter<"Exhibition"> | string | null
@@ -6149,7 +6156,7 @@ export namespace Prisma {
     title: string
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -6164,7 +6171,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -6192,13 +6199,24 @@ export namespace Prisma {
     data: XOR<ArtefactUpdateManyMutationInput, ArtefactUncheckedUpdateManyWithoutExhibitionsInput>
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type ArtefactCreateManyArtistInput = {
     id?: string
     title: string
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
-    dimensions?: InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
     artStyle: string
     imageUrl: string
     createdAt?: Date | string
@@ -6209,7 +6227,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6222,7 +6240,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6235,11 +6253,18 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DimensionsUpdateInput = {
+    height?: FloatFieldUpdateOperationsInput | number
+    width?: FloatFieldUpdateOperationsInput | number
+    depth?: NullableFloatFieldUpdateOperationsInput | number | null
+    unit?: StringFieldUpdateOperationsInput | string
   }
 
   export type ExhibitionUpdateWithoutArtefactsInput = {
@@ -6248,7 +6273,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     admissionFee?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -6262,7 +6286,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     artefactIds?: ExhibitionUpdateartefactIdsInput | string[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6277,7 +6300,6 @@ export namespace Prisma {
     theme?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    isCurrentlyActive?: BoolFieldUpdateOperationsInput | boolean
     location?: StringFieldUpdateOperationsInput | string
     artefactIds?: ExhibitionUpdateartefactIdsInput | string[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6290,7 +6312,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6304,7 +6326,7 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6317,11 +6339,30 @@ export namespace Prisma {
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    dimensions?: InputJsonValue | InputJsonValue | null
+    dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
     artStyle?: StringFieldUpdateOperationsInput | string
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
 

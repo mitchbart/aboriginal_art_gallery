@@ -39,11 +39,19 @@ model Artefact {
   exhibitionIds   String[]      @db.ObjectId
   creationYear    Int?
   description     String?
-  dimensions      Json?
+  dimensions      Dimensions?
   artStyle        String
   imageUrl        String
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+}
+
+// Type definition for dimensions
+type Dimensions {
+  height          Float
+  width           Float
+  depth           Float?
+  unit            String
 }
 
 model Exhibition {
@@ -53,7 +61,7 @@ model Exhibition {
   theme             String?
   startDate         DateTime
   endDate           DateTime
-  isCurrentlyActive Boolean
+  //isCurrentlyActive Boolean //moved to computed field
   location          String
   artefacts         Artefact[]  @relation(fields: [artefactIds], references: [id])
   artefactIds       String[]    @db.ObjectId
