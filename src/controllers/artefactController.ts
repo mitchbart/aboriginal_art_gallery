@@ -157,7 +157,7 @@ export async function deleteArtefact(req: Request, res: Response) {
 
   } catch (error) {
     console.error(error);
-    res.status(501).json({
+    res.status(500).json({
       status: false,
       message: 'Error deleting artefact',
     });

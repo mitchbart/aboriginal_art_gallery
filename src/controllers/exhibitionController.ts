@@ -26,26 +26,62 @@ export async function getExhibitions(req: Request, res: Response) {
 }
 
 // Get currently active exhibitions
+// export async function getActiveExhibitions(req: Request, res: Response) {
+//   try {
+//     const exhibitions = await prisma.exhibition.findMany({
+//       include: {
+//         artefacts: true,
+//       },
+//     });
+
+//     const activeExhibitions = exhibitions.filter(
+//       exhibition => exhibition.isCurrentlyActive
+//     );
+  
+  
+//     res.json({
+//       status: true,
+//       message: "Active exhibitions successfully fetched",
+//       data: activeExhibitions,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({
+//       status: false,
+//       message: 'Unknown error while fetching active exhibitions'
+//     });
+//   }
+// }
+
+// Get currently active exhibitions
 export async function getActiveExhibitions(req: Request, res: Response) {
   try {
-    const exhibitions = await prisma.exhibition.findMany({
+    // Get the current date
+    const now = new Date();
+
+    // Get active exhibitions
+    const activeExhibitions = await prisma.exhibition.findMany({
+      where: {
+        // Prisma query syntax to filter date between startDate and endDate
+        AND: [
+          { startDate: { lte: now} },
+          { endDate: { gte: now }},
+        ],
+      },
       include: {
         artefacts: true,
       },
     });
-
-    const activeExhibitions = exhibitions.filter(
-      exhibition => exhibition.isCurrentlyActive
-    );
-  
   
     res.json({
       status: true,
       message: "Active exhibitions successfully fetched",
       data: activeExhibitions,
     });
-  } catch (error) {
-    console.error(error);
+
+  // fix up error handling
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
       message: 'Unknown error while fetching active exhibitions'
@@ -183,7 +219,7 @@ export async function deleteExhibition(req: Request, res: Response) {
 
   } catch (error) {
     console.error(error);
-    res.status(501).json({
+    res.status(500).json({
       status: false,
       message: 'Error deleting exhibition',
     });
