@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const createArtefactSchema = z.object({
   title: z.string().min(1).max(200),
+  // Regex for mongodb objectid - https://stackoverflow.com/questions/20988446/regex-for-mongodb-objectid
   artistId: z.string().min(1).regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format"),
   exhibitionIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format")).default([]),
   creationYear: z.number().int().min(0).max(new Date().getFullYear()).optional().nullable(),

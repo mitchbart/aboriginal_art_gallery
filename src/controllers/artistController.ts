@@ -5,23 +5,26 @@ import { Prisma } from '../../generated/prisma'; // For error types
 // Get all artists
 export async function getArtists(req: Request, res: Response) {
   try {
-    // Find all artists and return
+    // Get all artists
     const artists = await prisma.artist.findMany({
       include: {
         artefacts: true,
       },
     });
+
+    // Response contains all artists
     res.json({
       status: true,
       message: "Artists successfully fetched",
       data: artists,
     });
-  } catch (error) {
+
+  } catch (e) {
     // Catch any other errors and output to console
-    console.error(error);
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error while fetching artists'
+      message: 'Internal server error'
     });
   }
 }
@@ -29,9 +32,12 @@ export async function getArtists(req: Request, res: Response) {
 // Get a singular artist
 export async function getArtist(req: Request, res: Response) {
   try {
+    // Get id from params
     const { artistid } = req.params;
-    // Find artist based on id
-    const artist = await prisma.artist.findFirst({
+    
+    // Find artist based on id - include artefacts
+    // https://www.prisma.io/docs/orm/reference/prisma-client-reference#finduniqueorthrow
+    const artist = await prisma.artist.findUniqueOrThrow({
       where: {
         id: artistid,
       },
@@ -39,26 +45,31 @@ export async function getArtist(req: Request, res: Response) {
         artefacts: true,
       },
     });
-    // If no artist found, return 404 not found
-    if (!artist) {
-      res.status(404).json({
-        status: false,
-        message: "Artist not found",
-      })
-      return;
-    }
-    // Artist response
+
+    // Response
     res.json({
       status: true,
       message: "Artist successfully fetched",
       data: artist,
     });
-  } catch (error) {
-    // Catch any other errors and output to console
-    console.error(error);
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error finding artist:', e)
+      // Return 404 if artist not found
+      // https://www.prisma.io/docs/orm/reference/error-reference#error-codes
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: 'Artist not found',
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Unknown error fetching artist'
+      message: 'Internal server error',
     });
   }
 }
@@ -66,20 +77,23 @@ export async function getArtist(req: Request, res: Response) {
 // Add a new artist
 export async function createArtist(req: Request, res: Response) {
   try {
+    // Create artist from request body
     const artist = await prisma.artist.create({
       data: req.body,
     });
+
     // Return status 201 created
     res.status(201).json({
       status: true,
       message: "Artist successfully created",
       data: artist,
     });
-  } catch (error) {
-    console.error(error);
+    
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error adding new artist'
+      message: 'Internal server error'
     });
   }
 }
@@ -108,8 +122,7 @@ export async function updateArtist(req: Request, res: Response) {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       console.error('Error updating artist:', e)
-      // Return 404 if record not found
-      // https://www.prisma.io/docs/orm/reference/error-reference#error-codes
+      // Return 404 if artist not found
       if (e.code === 'P2025') {
         res.status(404).json({
           status: false,
@@ -128,38 +141,39 @@ export async function updateArtist(req: Request, res: Response) {
 
 // Delete an artist
 export async function deleteArtist(req: Request, res: Response) {
-  const { artistid } = req.params;
   try {
-    const artist = await prisma.artist.findFirst({
-      where: {
-        id: artistid,
-      }
-    });
+    // Get id from params
+    const { artistid } = req.params;
 
-    if (!artist) {
-      res.status(404).json({
-        status: false,
-        message: 'Artist not found',
-      });
-      return;
-    }
-
+    // Delete requested artist
     await prisma.artist.delete({
       where: {
         id: artistid,
       }
     }),
 
+    // Response
     res.json({
       status: true,
       message: 'Artist successfully deleted',
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error deleting artist:', e)
+      // Return 404 if artist not found
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Error deleting artist',
+      message: 'Internal server error',
     });
   }
 }
