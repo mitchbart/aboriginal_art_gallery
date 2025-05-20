@@ -1,27 +1,28 @@
 import { Request, Response } from "express";
 import prisma from "../client";
+import { Prisma } from "../../generated/prisma";
 
 // Get all artefacts
 export async function getArtefacts(req: Request, res: Response) {
   try {
-    // Find all artefacts and return
     const artefacts = await prisma.artefact.findMany({
       include: {
         artist: true,
         exhibitions: true,
       },
     });
+
     res.json({
       status: true,
       message: "Artefacts successfully fetched",
       data: artefacts,
     });
-  } catch (error) {
-    // Catch any other errors and output to console
-    console.error(error);
+
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error while fetching artefacts'
+      message: 'Internal server error'
     });
   }
 }
@@ -30,8 +31,8 @@ export async function getArtefacts(req: Request, res: Response) {
 export async function getArtefact(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
-    // Find artefact based on id
-    const artefact = await prisma.artefact.findFirst({
+
+    const artefact = await prisma.artefact.findUniqueOrThrow({
       where: {
         id: artefactid,
       },
@@ -40,26 +41,28 @@ export async function getArtefact(req: Request, res: Response) {
         exhibitions: true,
       }
     });
-    // If no artefact found, return 404 not found
-    if (!artefact) {
-      res.status(404).json({
-        status: false,
-        message: "Artefact not found",
-      })
-      return;
-    }
-    // Artefact response
+
     res.json({
       status: true,
       message: "Artefact successfully fetched",
       data: artefact,
     });
-  } catch (error) {
-    // Catch any other errors and output to console
-    console.error(error);
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error finding artefact:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: 'Artefact not found',
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Unknown error fetching artefact'
+      message: 'Internal server error',
     });
   }
 }
@@ -70,17 +73,18 @@ export async function createArtefact(req: Request, res: Response) {
     const artefact = await prisma.artefact.create({
       data: req.body,
     });
-    // Return status 201 created
+    
     res.status(201).json({
       status: true,
       message: "Artefact successfully created",
       data: artefact,
     });
-  } catch (error) {
-    console.error(error);
+
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error adding new artefact'
+      message: 'Internal server error'
     });
   }
 }
@@ -89,20 +93,6 @@ export async function createArtefact(req: Request, res: Response) {
 export async function updateArtefact(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
-
-    const artefact = await prisma.artefact.findFirst({
-      where: {
-        id: artefactid,
-      }
-    });
-
-    if (!artefact) {
-      res.status(404).json({
-        status: false,
-        message: 'Artefact not found',
-      });
-      return;
-    }
 
     const updatedArtefact = await prisma.artefact.update({
       where: {
@@ -117,32 +107,29 @@ export async function updateArtefact(req: Request, res: Response) {
       data: updatedArtefact,
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error updating artefact:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Error updating artefact',
+      message: 'Internal server error',
     });
   }
 }
 
 // Delete an artefact
 export async function deleteArtefact(req: Request, res: Response) {
-  const { artefactid } = req.params;
   try {
-    const artefact = await prisma.artefact.findFirst({
-      where: {
-        id: artefactid,
-      }
-    });
-
-    if (!artefact) {
-      res.status(404).json({
-        status: false,
-        message: 'Artefact not found',
-      });
-      return;
-    }
+    const { artefactid } = req.params;
 
     await prisma.artefact.delete({
       where: {
@@ -155,11 +142,21 @@ export async function deleteArtefact(req: Request, res: Response) {
       message: 'Artefact successfully deleted',
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error deleting artefact:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Error deleting artefact',
+      message: 'Internal server error',
     });
   }
 }

@@ -6,7 +6,7 @@ import { PrismaClient } from '../generated/prisma';
 
 // Exhibitions isCurrentlyActive has been made a computed field by prisma
 // Added becuase I initially thought I could use this to filter the database
-// Endup up using a different method in exhibitionRoutes
+// Ended up up using a different method in exhibitionRoutes
 // Left this in incase it's useful for the frontend
 // Prisma computed fields - https://www.prisma.io/docs/orm/prisma-client/queries/computed-fields
 const prisma = new PrismaClient().$extends({

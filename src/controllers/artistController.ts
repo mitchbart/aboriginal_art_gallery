@@ -1,3 +1,5 @@
+// Note - first controller made so comments and links more frequent in this file
+
 import { Request, Response } from "express";
 import prisma from "../client";
 import { Prisma } from '../../generated/prisma'; // For error types
@@ -5,7 +7,7 @@ import { Prisma } from '../../generated/prisma'; // For error types
 // Get all artists
 export async function getArtists(req: Request, res: Response) {
   try {
-    // Get all artists
+    // Get all artists, include artefacts
     const artists = await prisma.artist.findMany({
       include: {
         artefacts: true,

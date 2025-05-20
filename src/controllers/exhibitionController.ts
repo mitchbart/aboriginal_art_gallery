@@ -1,26 +1,27 @@
 import { Request, Response } from "express";
 import prisma from "../client";
+import { Prisma } from '../../generated/prisma';
 
 // Get all exhibitions
 export async function getExhibitions(req: Request, res: Response) {
   try {
-    // Find all exhibitions and return
     const exhibitions = await prisma.exhibition.findMany({
       include: {
         artefacts: true,
       },
     });
+
     res.json({
       status: true,
       message: "Exhibitions successfully fetched",
       data: exhibitions,
     });
-  } catch (error) {
-    // Catch any other errors and output to console
-    console.error(error);
+
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error while fetching exhibitions'
+      message: 'Internal server error'
     });
   }
 }
@@ -62,7 +63,7 @@ export async function getActiveExhibitions(req: Request, res: Response) {
     // Get active exhibitions
     const activeExhibitions = await prisma.exhibition.findMany({
       where: {
-        // Prisma query syntax to filter date between startDate and endDate
+        // Prisma query syntax to check if current date between startDate and endDate
         AND: [
           { startDate: { lte: now} },
           { endDate: { gte: now }},
@@ -79,12 +80,11 @@ export async function getActiveExhibitions(req: Request, res: Response) {
       data: activeExhibitions,
     });
 
-  // fix up error handling
   } catch (e) {
     console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error while fetching active exhibitions'
+      message: 'Internal server error'
     });
   }
 }
@@ -93,8 +93,8 @@ export async function getActiveExhibitions(req: Request, res: Response) {
 export async function getExhibition(req: Request, res: Response) {
   try {
     const { exhibitionid } = req.params;
-    // Find exhibition based on id
-    const exhibition = await prisma.exhibition.findFirst({
+
+    const exhibition = await prisma.exhibition.findUniqueOrThrow({
       where: {
         id: exhibitionid,
       },
@@ -102,26 +102,28 @@ export async function getExhibition(req: Request, res: Response) {
         artefacts: true,
       },
     });
-    // If no exhibition found, return 404 not found
-    if (!exhibition) {
-      res.status(404).json({
-        status: false,
-        message: "Exhibition not found",
-      })
-      return;
-    }
-    // Exhibition response
+
     res.json({
       status: true,
       message: "Exhibition successfully fetched",
       data: exhibition,
     });
-  } catch (error) {
-    // Catch any other errors and output to console
-    console.error(error);
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error finding artist:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: 'Exhibition not found',
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Unknown error fetching exhibition'
+      message: 'Internal server error',
     });
   }
 }
@@ -132,17 +134,18 @@ export async function createExhibition(req: Request, res: Response) {
     const exhibition = await prisma.exhibition.create({
       data: req.body,
     });
-    // Return status 201 created
+
     res.status(201).json({
       status: true,
       message: "Exhibition successfully created",
       data: exhibition,
     });
-  } catch (error) {
-    console.error(error);
+
+  } catch (e) {
+    console.error(e);
     res.status(500).json({
       status: false,
-      message: 'Unknown error adding new exhibition'
+      message: 'Internal server error'
     });
   }
 }
@@ -151,20 +154,6 @@ export async function createExhibition(req: Request, res: Response) {
 export async function updateExhibition(req: Request, res: Response) {
   try {
     const { exhibitionid } = req.params;
-
-    const exhibition = await prisma.exhibition.findFirst({
-      where: {
-        id: exhibitionid,
-      }
-    });
-
-    if (!exhibition) {
-      res.status(404).json({
-        status: false,
-        message: 'Exhibition not found',
-      });
-      return;
-    }
 
     const updatedExhibition = await prisma.exhibition.update({
       where: {
@@ -179,32 +168,29 @@ export async function updateExhibition(req: Request, res: Response) {
       data: updatedExhibition,
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error updating exhibition:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Error updating exhibition',
+      message: 'Internal server error',
     });
   }
 }
 
 // Delete an exhibition
 export async function deleteExhibition(req: Request, res: Response) {
-  const { exhibitionid } = req.params;
   try {
-    const exhibition = await prisma.exhibition.findFirst({
-      where: {
-        id: exhibitionid,
-      }
-    });
-
-    if (!exhibition) {
-      res.status(404).json({
-        status: false,
-        message: 'Exhibition not found',
-      });
-      return;
-    }
+    const { exhibitionid } = req.params;
 
     await prisma.exhibition.delete({
       where: {
@@ -217,11 +203,21 @@ export async function deleteExhibition(req: Request, res: Response) {
       message: 'Exhibition successfully deleted',
     });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error deleting exhibition:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
     res.status(500).json({
       status: false,
-      message: 'Error deleting exhibition',
+      message: 'Internal server error',
     });
   }
 }
