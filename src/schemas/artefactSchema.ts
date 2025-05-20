@@ -1,9 +1,14 @@
 import { z } from 'zod';
+import { ArtStyleType, DimensionUnit } from '../../generated/prisma';
+
+// Convert to zod enum
+const artStyleEnum = z.nativeEnum(ArtStyleType);
+const dimensionEnum = z.nativeEnum(DimensionUnit);
 
 export const createArtefactSchema = z.object({
   title: z.string().min(1).max(200),
   // Regex for mongodb objectid - https://stackoverflow.com/questions/20988446/regex-for-mongodb-objectid
-  artistId: z.string().min(1).regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format"),
+  artistId: z.string().min(1).regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format").optional().nullable(),
   exhibitionIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format")).default([]),
   creationYear: z.number().int().min(0).max(new Date().getFullYear()).optional().nullable(),
   description: z.string().max(2000).optional().nullable(),
@@ -11,9 +16,9 @@ export const createArtefactSchema = z.object({
     height: z.number().positive().optional(),
     width: z.number().positive().optional(),
     depth: z.number().positive().optional(),
-    unit: z.enum(['cm', 'mm', 'in', 'm']).optional(),
+    unit: dimensionEnum.optional(),
   }).optional().nullable(),
-  artStyle: z.string().min(1).max(100),
+  artStyle: artStyleEnum,
   imageUrl: z.string().url(),
 }).strict();
 

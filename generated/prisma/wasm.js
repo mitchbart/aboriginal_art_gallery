@@ -165,7 +165,25 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+exports.ArtStyleType = exports.$Enums.ArtStyleType = {
+  DOT_PAINTING: 'DOT_PAINTING',
+  BARK_PAINTING: 'BARK_PAINTING',
+  ROCK_ART: 'ROCK_ART',
+  WEAVING: 'WEAVING',
+  CROSS_HATCHING: 'CROSS_HATCHING',
+  OCHRE: 'OCHRE',
+  SCULPTURE: 'SCULPTURE',
+  X_RAY_ART: 'X_RAY_ART',
+  CERAMICS: 'CERAMICS',
+  CONTEMPORARY: 'CONTEMPORARY',
+  TRADITIONAL: 'TRADITIONAL'
+};
 
+exports.DimensionUnit = exports.$Enums.DimensionUnit = {
+  CM: 'CM',
+  INCHES: 'INCHES',
+  MM: 'MM'
+};
 
 exports.Prisma.ModelName = {
   Artist: 'Artist',

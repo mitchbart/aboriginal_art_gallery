@@ -1,4 +1,8 @@
 import { z } from 'zod';
+import { ArtStyleType } from '../../generated/prisma';
+
+// Convert to zod enum
+const artStyleEnum = z.nativeEnum(ArtStyleType);
 
 export const createArtistSchema = z.object({
   name: z.string().min(1).max(100),
@@ -8,7 +12,7 @@ export const createArtistSchema = z.object({
   biography: z.string().min(10).max(1000),
   birthYear: z.number().int().max(new Date().getFullYear()).optional().nullable(),
   deathYear: z.number().int().max(new Date().getFullYear()).optional().nullable(),
-  artStyles: z.array(z.string()).min(1),
+  artStyles: z.array(artStyleEnum).min(1).max(10),
   imageUrl: z.string().url().optional().nullable(),
 }).strict();
 

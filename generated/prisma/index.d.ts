@@ -35,6 +35,45 @@ export type Artefact = $Result.DefaultSelection<Prisma.$ArtefactPayload>
 export type Exhibition = $Result.DefaultSelection<Prisma.$ExhibitionPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const ArtStyleType: {
+  DOT_PAINTING: 'DOT_PAINTING',
+  BARK_PAINTING: 'BARK_PAINTING',
+  ROCK_ART: 'ROCK_ART',
+  WEAVING: 'WEAVING',
+  CROSS_HATCHING: 'CROSS_HATCHING',
+  OCHRE: 'OCHRE',
+  SCULPTURE: 'SCULPTURE',
+  X_RAY_ART: 'X_RAY_ART',
+  CERAMICS: 'CERAMICS',
+  CONTEMPORARY: 'CONTEMPORARY',
+  TRADITIONAL: 'TRADITIONAL'
+};
+
+export type ArtStyleType = (typeof ArtStyleType)[keyof typeof ArtStyleType]
+
+
+export const DimensionUnit: {
+  CM: 'CM',
+  INCHES: 'INCHES',
+  MM: 'MM'
+};
+
+export type DimensionUnit = (typeof DimensionUnit)[keyof typeof DimensionUnit]
+
+}
+
+export type ArtStyleType = $Enums.ArtStyleType
+
+export const ArtStyleType: typeof $Enums.ArtStyleType
+
+export type DimensionUnit = $Enums.DimensionUnit
+
+export const DimensionUnit: typeof $Enums.DimensionUnit
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -1135,7 +1174,7 @@ export namespace Prisma {
       height: number
       width: number
       depth: number | null
-      unit: string
+      unit: $Enums.DimensionUnit
     }
     composites: {}
   }
@@ -1153,7 +1192,7 @@ export namespace Prisma {
     readonly height: FieldRef<"Dimensions", 'Float'>
     readonly width: FieldRef<"Dimensions", 'Float'>
     readonly depth: FieldRef<"Dimensions", 'Float'>
-    readonly unit: FieldRef<"Dimensions", 'String'>
+    readonly unit: FieldRef<"Dimensions", 'DimensionUnit'>
   }
     
 
@@ -1389,7 +1428,7 @@ export namespace Prisma {
     biography: string
     birthYear: number | null
     deathYear: number | null
-    artStyles: string[]
+    artStyles: $Enums.ArtStyleType[]
     imageUrl: string | null
     createdAt: Date
     updatedAt: Date
@@ -1468,7 +1507,7 @@ export namespace Prisma {
       biography: string
       birthYear: number | null
       deathYear: number | null
-      artStyles: string[]
+      artStyles: $Enums.ArtStyleType[]
       imageUrl: string | null
       createdAt: Date
       updatedAt: Date
@@ -1873,7 +1912,7 @@ export namespace Prisma {
     readonly biography: FieldRef<"Artist", 'String'>
     readonly birthYear: FieldRef<"Artist", 'Int'>
     readonly deathYear: FieldRef<"Artist", 'Int'>
-    readonly artStyles: FieldRef<"Artist", 'String[]'>
+    readonly artStyles: FieldRef<"Artist", 'ArtStyleType[]'>
     readonly imageUrl: FieldRef<"Artist", 'String'>
     readonly createdAt: FieldRef<"Artist", 'DateTime'>
     readonly updatedAt: FieldRef<"Artist", 'DateTime'>
@@ -2315,7 +2354,7 @@ export namespace Prisma {
     artistId: string | null
     creationYear: number | null
     description: string | null
-    artStyle: string | null
+    artStyle: $Enums.ArtStyleType | null
     imageUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2327,7 +2366,7 @@ export namespace Prisma {
     artistId: string | null
     creationYear: number | null
     description: string | null
-    artStyle: string | null
+    artStyle: $Enums.ArtStyleType | null
     imageUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2483,11 +2522,11 @@ export namespace Prisma {
   export type ArtefactGroupByOutputType = {
     id: string
     title: string
-    artistId: string
+    artistId: string | null
     exhibitionIds: string[]
     creationYear: number | null
     description: string | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt: Date
     updatedAt: Date
@@ -2524,7 +2563,7 @@ export namespace Prisma {
     imageUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    artist?: boolean | ArtistDefaultArgs<ExtArgs>
+    artist?: boolean | Artefact$artistArgs<ExtArgs>
     exhibitions?: boolean | Artefact$exhibitionsArgs<ExtArgs>
     _count?: boolean | ArtefactCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["artefact"]>
@@ -2546,7 +2585,7 @@ export namespace Prisma {
 
   export type ArtefactOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "artistId" | "exhibitionIds" | "creationYear" | "description" | "dimensions" | "artStyle" | "imageUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["artefact"]>
   export type ArtefactInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    artist?: boolean | ArtistDefaultArgs<ExtArgs>
+    artist?: boolean | Artefact$artistArgs<ExtArgs>
     exhibitions?: boolean | Artefact$exhibitionsArgs<ExtArgs>
     _count?: boolean | ArtefactCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2554,17 +2593,17 @@ export namespace Prisma {
   export type $ArtefactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Artefact"
     objects: {
-      artist: Prisma.$ArtistPayload<ExtArgs>
+      artist: Prisma.$ArtistPayload<ExtArgs> | null
       exhibitions: Prisma.$ExhibitionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
-      artistId: string
+      artistId: string | null
       exhibitionIds: string[]
       creationYear: number | null
       description: string | null
-      artStyle: string
+      artStyle: $Enums.ArtStyleType
       imageUrl: string
       createdAt: Date
       updatedAt: Date
@@ -2933,7 +2972,7 @@ export namespace Prisma {
    */
   export interface Prisma__ArtefactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    artist<T extends ArtistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ArtistDefaultArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    artist<T extends Artefact$artistArgs<ExtArgs> = {}>(args?: Subset<T, Artefact$artistArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     exhibitions<T extends Artefact$exhibitionsArgs<ExtArgs> = {}>(args?: Subset<T, Artefact$exhibitionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExhibitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2970,7 +3009,7 @@ export namespace Prisma {
     readonly exhibitionIds: FieldRef<"Artefact", 'String[]'>
     readonly creationYear: FieldRef<"Artefact", 'Int'>
     readonly description: FieldRef<"Artefact", 'String'>
-    readonly artStyle: FieldRef<"Artefact", 'String'>
+    readonly artStyle: FieldRef<"Artefact", 'ArtStyleType'>
     readonly imageUrl: FieldRef<"Artefact", 'String'>
     readonly createdAt: FieldRef<"Artefact", 'DateTime'>
     readonly updatedAt: FieldRef<"Artefact", 'DateTime'>
@@ -3341,6 +3380,25 @@ export namespace Prisma {
      * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
      */
     options?: InputJsonValue
+  }
+
+  /**
+   * Artefact.artist
+   */
+  export type Artefact$artistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Artist
+     */
+    select?: ArtistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Artist
+     */
+    omit?: ArtistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtistInclude<ExtArgs> | null
+    where?: ArtistWhereInput
   }
 
   /**
@@ -4604,6 +4662,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ArtStyleType[]'
+   */
+  export type ListEnumArtStyleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ArtStyleType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ArtStyleType'
+   */
+  export type EnumArtStyleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ArtStyleType'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -4629,6 +4701,20 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DimensionUnit'
+   */
+  export type EnumDimensionUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DimensionUnit'>
+    
+
+
+  /**
+   * Reference to a field of type 'DimensionUnit[]'
+   */
+  export type ListEnumDimensionUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DimensionUnit[]'>
+    
   /**
    * Deep Input Types
    */
@@ -4646,7 +4732,7 @@ export namespace Prisma {
     biography?: StringFilter<"Artist"> | string
     birthYear?: IntNullableFilter<"Artist"> | number | null
     deathYear?: IntNullableFilter<"Artist"> | number | null
-    artStyles?: StringNullableListFilter<"Artist">
+    artStyles?: EnumArtStyleTypeNullableListFilter<"Artist">
     imageUrl?: StringNullableFilter<"Artist"> | string | null
     createdAt?: DateTimeFilter<"Artist"> | Date | string
     updatedAt?: DateTimeFilter<"Artist"> | Date | string
@@ -4681,7 +4767,7 @@ export namespace Prisma {
     biography?: StringFilter<"Artist"> | string
     birthYear?: IntNullableFilter<"Artist"> | number | null
     deathYear?: IntNullableFilter<"Artist"> | number | null
-    artStyles?: StringNullableListFilter<"Artist">
+    artStyles?: EnumArtStyleTypeNullableListFilter<"Artist">
     imageUrl?: StringNullableFilter<"Artist"> | string | null
     createdAt?: DateTimeFilter<"Artist"> | Date | string
     updatedAt?: DateTimeFilter<"Artist"> | Date | string
@@ -4720,7 +4806,7 @@ export namespace Prisma {
     biography?: StringWithAggregatesFilter<"Artist"> | string
     birthYear?: IntNullableWithAggregatesFilter<"Artist"> | number | null
     deathYear?: IntNullableWithAggregatesFilter<"Artist"> | number | null
-    artStyles?: StringNullableListFilter<"Artist">
+    artStyles?: EnumArtStyleTypeNullableListFilter<"Artist">
     imageUrl?: StringNullableWithAggregatesFilter<"Artist"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Artist"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Artist"> | Date | string
@@ -4732,16 +4818,16 @@ export namespace Prisma {
     NOT?: ArtefactWhereInput | ArtefactWhereInput[]
     id?: StringFilter<"Artefact"> | string
     title?: StringFilter<"Artefact"> | string
-    artistId?: StringFilter<"Artefact"> | string
+    artistId?: StringNullableFilter<"Artefact"> | string | null
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
     dimensions?: XOR<DimensionsNullableCompositeFilter, DimensionsObjectEqualityInput> | null
-    artStyle?: StringFilter<"Artefact"> | string
+    artStyle?: EnumArtStyleTypeFilter<"Artefact"> | $Enums.ArtStyleType
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
     updatedAt?: DateTimeFilter<"Artefact"> | Date | string
-    artist?: XOR<ArtistScalarRelationFilter, ArtistWhereInput>
+    artist?: XOR<ArtistNullableScalarRelationFilter, ArtistWhereInput> | null
     exhibitions?: ExhibitionListRelationFilter
   }
 
@@ -4767,16 +4853,16 @@ export namespace Prisma {
     OR?: ArtefactWhereInput[]
     NOT?: ArtefactWhereInput | ArtefactWhereInput[]
     title?: StringFilter<"Artefact"> | string
-    artistId?: StringFilter<"Artefact"> | string
+    artistId?: StringNullableFilter<"Artefact"> | string | null
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
     dimensions?: XOR<DimensionsNullableCompositeFilter, DimensionsObjectEqualityInput> | null
-    artStyle?: StringFilter<"Artefact"> | string
+    artStyle?: EnumArtStyleTypeFilter<"Artefact"> | $Enums.ArtStyleType
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
     updatedAt?: DateTimeFilter<"Artefact"> | Date | string
-    artist?: XOR<ArtistScalarRelationFilter, ArtistWhereInput>
+    artist?: XOR<ArtistNullableScalarRelationFilter, ArtistWhereInput> | null
     exhibitions?: ExhibitionListRelationFilter
   }, "id">
 
@@ -4804,11 +4890,11 @@ export namespace Prisma {
     NOT?: ArtefactScalarWhereWithAggregatesInput | ArtefactScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Artefact"> | string
     title?: StringWithAggregatesFilter<"Artefact"> | string
-    artistId?: StringWithAggregatesFilter<"Artefact"> | string
+    artistId?: StringNullableWithAggregatesFilter<"Artefact"> | string | null
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableWithAggregatesFilter<"Artefact"> | number | null
     description?: StringNullableWithAggregatesFilter<"Artefact"> | string | null
-    artStyle?: StringWithAggregatesFilter<"Artefact"> | string
+    artStyle?: EnumArtStyleTypeWithAggregatesFilter<"Artefact"> | $Enums.ArtStyleType
     imageUrl?: StringWithAggregatesFilter<"Artefact"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Artefact"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Artefact"> | Date | string
@@ -4915,7 +5001,7 @@ export namespace Prisma {
     biography: string
     birthYear?: number | null
     deathYear?: number | null
-    artStyles?: ArtistCreateartStylesInput | string[]
+    artStyles?: ArtistCreateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4931,7 +5017,7 @@ export namespace Prisma {
     biography: string
     birthYear?: number | null
     deathYear?: number | null
-    artStyles?: ArtistCreateartStylesInput | string[]
+    artStyles?: ArtistCreateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4946,7 +5032,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4961,7 +5047,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4977,7 +5063,7 @@ export namespace Prisma {
     biography: string
     birthYear?: number | null
     deathYear?: number | null
-    artStyles?: ArtistCreateartStylesInput | string[]
+    artStyles?: ArtistCreateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4991,7 +5077,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5005,7 +5091,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5017,23 +5103,23 @@ export namespace Prisma {
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    artist: ArtistCreateNestedOneWithoutArtefactsInput
+    artist?: ArtistCreateNestedOneWithoutArtefactsInput
     exhibitions?: ExhibitionCreateNestedManyWithoutArtefactsInput
   }
 
   export type ArtefactUncheckedCreateInput = {
     id?: string
     title: string
-    artistId: string
+    artistId?: string | null
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5045,22 +5131,22 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    artist?: ArtistUpdateOneRequiredWithoutArtefactsNestedInput
+    artist?: ArtistUpdateOneWithoutArtefactsNestedInput
     exhibitions?: ExhibitionUpdateManyWithoutArtefactsNestedInput
   }
 
   export type ArtefactUncheckedUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5070,12 +5156,12 @@ export namespace Prisma {
   export type ArtefactCreateManyInput = {
     id?: string
     title: string
-    artistId: string
+    artistId?: string | null
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5086,7 +5172,7 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5094,12 +5180,12 @@ export namespace Prisma {
 
   export type ArtefactUncheckedUpdateManyInput = {
     title?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5250,11 +5336,11 @@ export namespace Prisma {
     isSet?: boolean
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type EnumArtStyleTypeNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel> | null
+    has?: $Enums.ArtStyleType | EnumArtStyleTypeFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
     isEmpty?: boolean
   }
 
@@ -5400,6 +5486,14 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type DimensionsNullableCompositeFilter = {
     equals?: DimensionsObjectEqualityInput | null
     is?: DimensionsWhereInput | null
@@ -5411,12 +5505,19 @@ export namespace Prisma {
     height: number
     width: number
     depth?: number | null
-    unit: string
+    unit: $Enums.DimensionUnit
   }
 
-  export type ArtistScalarRelationFilter = {
-    is?: ArtistWhereInput
-    isNot?: ArtistWhereInput
+  export type EnumArtStyleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtStyleType | EnumArtStyleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtStyleTypeFilter<$PrismaModel> | $Enums.ArtStyleType
+  }
+
+  export type ArtistNullableScalarRelationFilter = {
+    is?: ArtistWhereInput | null
+    isNot?: ArtistWhereInput | null
   }
 
   export type ExhibitionListRelationFilter = {
@@ -5479,6 +5580,16 @@ export namespace Prisma {
 
   export type ArtefactSumOrderByAggregateInput = {
     creationYear?: SortOrder
+  }
+
+  export type EnumArtStyleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtStyleType | EnumArtStyleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtStyleTypeWithAggregatesFilter<$PrismaModel> | $Enums.ArtStyleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumArtStyleTypeFilter<$PrismaModel>
+    _max?: NestedEnumArtStyleTypeFilter<$PrismaModel>
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -5562,7 +5673,7 @@ export namespace Prisma {
   }
 
   export type ArtistCreateartStylesInput = {
-    set: string[]
+    set: $Enums.ArtStyleType[]
   }
 
   export type ArtefactCreateNestedManyWithoutArtistInput = {
@@ -5598,8 +5709,8 @@ export namespace Prisma {
   }
 
   export type ArtistUpdateartStylesInput = {
-    set?: string[]
-    push?: string | string[]
+    set?: $Enums.ArtStyleType[]
+    push?: $Enums.ArtStyleType | $Enums.ArtStyleType[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -5642,7 +5753,7 @@ export namespace Prisma {
     height: number
     width: number
     depth?: number | null
-    unit: string
+    unit: $Enums.DimensionUnit
   }
 
   export type ArtistCreateNestedOneWithoutArtefactsInput = {
@@ -5673,10 +5784,16 @@ export namespace Prisma {
     unset?: boolean
   }
 
-  export type ArtistUpdateOneRequiredWithoutArtefactsNestedInput = {
+  export type EnumArtStyleTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ArtStyleType
+  }
+
+  export type ArtistUpdateOneWithoutArtefactsNestedInput = {
     create?: XOR<ArtistCreateWithoutArtefactsInput, ArtistUncheckedCreateWithoutArtefactsInput>
     connectOrCreate?: ArtistCreateOrConnectWithoutArtefactsInput
     upsert?: ArtistUpsertWithoutArtefactsInput
+    disconnect?: boolean
+    delete?: ArtistWhereInput | boolean
     connect?: ArtistWhereUniqueInput
     update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutArtefactsInput, ArtistUpdateWithoutArtefactsInput>, ArtistUncheckedUpdateWithoutArtefactsInput>
   }
@@ -5916,7 +6033,24 @@ export namespace Prisma {
     height?: FloatFilter<"Dimensions"> | number
     width?: FloatFilter<"Dimensions"> | number
     depth?: FloatNullableFilter<"Dimensions"> | number | null
-    unit?: StringFilter<"Dimensions"> | string
+    unit?: EnumDimensionUnitFilter<"Dimensions"> | $Enums.DimensionUnit
+  }
+
+  export type NestedEnumArtStyleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtStyleType | EnumArtStyleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtStyleTypeFilter<$PrismaModel> | $Enums.ArtStyleType
+  }
+
+  export type NestedEnumArtStyleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtStyleType | EnumArtStyleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtStyleType[] | ListEnumArtStyleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtStyleTypeWithAggregatesFilter<$PrismaModel> | $Enums.ArtStyleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumArtStyleTypeFilter<$PrismaModel>
+    _max?: NestedEnumArtStyleTypeFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5942,7 +6076,7 @@ export namespace Prisma {
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5956,7 +6090,7 @@ export namespace Prisma {
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5994,11 +6128,11 @@ export namespace Prisma {
     NOT?: ArtefactScalarWhereInput | ArtefactScalarWhereInput[]
     id?: StringFilter<"Artefact"> | string
     title?: StringFilter<"Artefact"> | string
-    artistId?: StringFilter<"Artefact"> | string
+    artistId?: StringNullableFilter<"Artefact"> | string | null
     exhibitionIds?: StringNullableListFilter<"Artefact">
     creationYear?: IntNullableFilter<"Artefact"> | number | null
     description?: StringNullableFilter<"Artefact"> | string | null
-    artStyle?: StringFilter<"Artefact"> | string
+    artStyle?: EnumArtStyleTypeFilter<"Artefact"> | $Enums.ArtStyleType
     imageUrl?: StringFilter<"Artefact"> | string
     createdAt?: DateTimeFilter<"Artefact"> | Date | string
     updatedAt?: DateTimeFilter<"Artefact"> | Date | string
@@ -6013,7 +6147,7 @@ export namespace Prisma {
     biography: string
     birthYear?: number | null
     deathYear?: number | null
-    artStyles?: ArtistCreateartStylesInput | string[]
+    artStyles?: ArtistCreateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6028,7 +6162,7 @@ export namespace Prisma {
     biography: string
     birthYear?: number | null
     deathYear?: number | null
-    artStyles?: ArtistCreateartStylesInput | string[]
+    artStyles?: ArtistCreateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6097,7 +6231,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6111,7 +6245,7 @@ export namespace Prisma {
     biography?: StringFieldUpdateOperationsInput | string
     birthYear?: NullableIntFieldUpdateOperationsInput | number | null
     deathYear?: NullableIntFieldUpdateOperationsInput | number | null
-    artStyles?: ArtistUpdateartStylesInput | string[]
+    artStyles?: ArtistUpdateartStylesInput | $Enums.ArtStyleType[]
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6157,22 +6291,22 @@ export namespace Prisma {
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    artist: ArtistCreateNestedOneWithoutArtefactsInput
+    artist?: ArtistCreateNestedOneWithoutArtefactsInput
   }
 
   export type ArtefactUncheckedCreateWithoutExhibitionsInput = {
     id?: string
     title: string
-    artistId: string
+    artistId?: string | null
     exhibitionIds?: ArtefactCreateexhibitionIdsInput | string[]
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6210,6 +6344,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type EnumDimensionUnitFilter<$PrismaModel = never> = {
+    equals?: $Enums.DimensionUnit | EnumDimensionUnitFieldRefInput<$PrismaModel>
+    in?: $Enums.DimensionUnit[] | ListEnumDimensionUnitFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DimensionUnit[] | ListEnumDimensionUnitFieldRefInput<$PrismaModel>
+    not?: NestedEnumDimensionUnitFilter<$PrismaModel> | $Enums.DimensionUnit
+  }
+
   export type ArtefactCreateManyArtistInput = {
     id?: string
     title: string
@@ -6217,7 +6358,7 @@ export namespace Prisma {
     creationYear?: number | null
     description?: string | null
     dimensions?: XOR<DimensionsNullableCreateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle: string
+    artStyle: $Enums.ArtStyleType
     imageUrl: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6228,7 +6369,7 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6241,7 +6382,7 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6254,7 +6395,7 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6264,7 +6405,7 @@ export namespace Prisma {
     height?: FloatFieldUpdateOperationsInput | number
     width?: FloatFieldUpdateOperationsInput | number
     depth?: NullableFloatFieldUpdateOperationsInput | number | null
-    unit?: StringFieldUpdateOperationsInput | string
+    unit?: EnumDimensionUnitFieldUpdateOperationsInput | $Enums.DimensionUnit
   }
 
   export type ExhibitionUpdateWithoutArtefactsInput = {
@@ -6313,21 +6454,21 @@ export namespace Prisma {
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    artist?: ArtistUpdateOneRequiredWithoutArtefactsNestedInput
+    artist?: ArtistUpdateOneWithoutArtefactsNestedInput
   }
 
   export type ArtefactUncheckedUpdateWithoutExhibitionsInput = {
     title?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6335,12 +6476,12 @@ export namespace Prisma {
 
   export type ArtefactUncheckedUpdateManyWithoutExhibitionsInput = {
     title?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
     exhibitionIds?: ArtefactUpdateexhibitionIdsInput | string[]
     creationYear?: NullableIntFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dimensions?: XOR<DimensionsNullableUpdateEnvelopeInput, DimensionsCreateInput> | null
-    artStyle?: StringFieldUpdateOperationsInput | string
+    artStyle?: EnumArtStyleTypeFieldUpdateOperationsInput | $Enums.ArtStyleType
     imageUrl?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6357,12 +6498,23 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumDimensionUnitFilter<$PrismaModel = never> = {
+    equals?: $Enums.DimensionUnit | EnumDimensionUnitFieldRefInput<$PrismaModel>
+    in?: $Enums.DimensionUnit[] | ListEnumDimensionUnitFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DimensionUnit[] | ListEnumDimensionUnitFieldRefInput<$PrismaModel>
+    not?: NestedEnumDimensionUnitFilter<$PrismaModel> | $Enums.DimensionUnit
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumDimensionUnitFieldUpdateOperationsInput = {
+    set?: $Enums.DimensionUnit
   }
 
 
