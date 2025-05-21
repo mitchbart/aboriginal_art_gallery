@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import prisma from "../client";
-import { Prisma } from '../../generated/prisma'; // For error types
+import { ArtStyleType, Prisma } from '../../generated/prisma'; // For error types
 
 // Get all artists
 export async function getArtists(req: Request, res: Response) {
@@ -21,6 +21,53 @@ export async function getArtists(req: Request, res: Response) {
       data: artists,
     });
 
+  } catch (e) {
+    // Catch any other errors and output to console
+    console.error(e);
+    res.status(500).json({
+      status: false,
+      message: 'Internal server error'
+    });
+  }
+}
+
+// Get artists who create a certain artstyle
+export async function  getArtistsByArtstyle(req: Request, res: Response) {
+  try {
+    // Artstyle passed into params, convert to uppercase
+    const { style } = req.params;
+    const normalisedStyle = style.toUpperCase();
+    
+
+    // CHeck art style is valid against ArtStyleType enum, return 400 if invalid
+    const validStyles = Object.values(ArtStyleType)
+
+    if (!validStyles.includes(normalisedStyle as ArtStyleType)) {
+      res.status(400).json({
+        status: false,
+        message: `Invalid art style: '${style}'. Valid styles are: ${validStyles.join(', ')}.`,
+      })
+    }
+
+    // Get the artists that create the artstyle
+    const artists = await prisma.artist.findMany({
+      where: {
+        artStyles: {
+          has: normalisedStyle as ArtStyleType,
+        }
+      },
+      include: {
+        artefacts: true,
+      },
+    });
+
+    // Response
+    res.json({
+      status: true,
+      message: "Artists using this style succesfully fetched",
+      data: artists,
+    });
+        
   } catch (e) {
     // Catch any other errors and output to console
     console.error(e);

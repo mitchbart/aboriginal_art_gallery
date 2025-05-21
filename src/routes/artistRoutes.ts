@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   getArtists,
+  getArtistsByArtstyle,
   getArtist,
   createArtist,
   updateArtist,
@@ -13,6 +14,7 @@ import { createArtistSchema, updateArtistSchema } from '../schemas/artistSchema'
 const artistRoute = Router();
 
 artistRoute.get('', getArtists);
+artistRoute.get('/artstyle/:style', getArtistsByArtstyle);
 artistRoute.get('/:artistid', getArtist);
 artistRoute.post('', validateSchema(createArtistSchema), createArtist);
 artistRoute.patch('/:artistid', validateSchema(updateArtistSchema), updateArtist);
