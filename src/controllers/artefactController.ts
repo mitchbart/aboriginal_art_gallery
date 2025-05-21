@@ -8,7 +8,6 @@ export async function getArtefacts(req: Request, res: Response) {
     const artefacts = await prisma.artefact.findMany({
       include: {
         artist: true,
-        exhibitions: true,
       },
     });
 
@@ -38,7 +37,6 @@ export async function getArtefact(req: Request, res: Response) {
       },
       include: {
         artist: true,
-        exhibitions: true,
       }
     });
 
@@ -47,6 +45,53 @@ export async function getArtefact(req: Request, res: Response) {
       message: "Artefact successfully fetched",
       data: artefact,
     });
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error finding artefact:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: 'Artefact not found',
+        });
+        return;
+      }
+    }
+    
+    res.status(500).json({
+      status: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+// Get an artefacts exhibitions
+export async function getArtefactExhibitions(req: Request, res: Response) {
+  try {
+    const { artefactid } = req.params;
+
+    // Check the artefact exists
+    const artefact = await prisma.artefact.findUniqueOrThrow({
+      where: {
+        id: artefactid,
+      }
+    });
+
+    // Get the exhibitions that include the artefact
+    const exhibitions = await prisma.exhibition.findMany({
+      where: {
+        artefactIds: {
+          has: artefactid,
+        }
+      }
+    });
+
+    // Response
+    res.json({
+      status: true,
+      message: "Exhibitions for this artefact successfully fetched",
+      data: exhibitions,
+    });    
 
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -135,7 +180,7 @@ export async function deleteArtefact(req: Request, res: Response) {
       where: {
         id: artefactid,
       }
-    }),
+    });
 
     res.json({
       status: true,

@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Enum for different art style types
+// Enum for different art style types, add any additional types as required
 enum ArtStyleType {
   DOT_PAINTING
   BARK_PAINTING

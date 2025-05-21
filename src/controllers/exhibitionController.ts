@@ -168,7 +168,7 @@ export async function deleteExhibition(req: Request, res: Response) {
       where: {
         id: exhibitionid,
       }
-    }),
+    });
 
     res.json({
       status: true,

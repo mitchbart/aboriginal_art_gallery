@@ -152,7 +152,7 @@ export async function deleteArtist(req: Request, res: Response) {
       where: {
         id: artistid,
       }
-    }),
+    });
 
     // Response
     res.json({
