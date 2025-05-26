@@ -37,7 +37,6 @@ export async function  getArtistsByArtstyle(req: Request, res: Response) {
     // Artstyle passed into params, convert to uppercase
     const { style } = req.params;
     const normalisedStyle = style.toUpperCase();
-    
 
     // CHeck art style is valid against ArtStyleType enum, return 400 if invalid
     const validStyles = Object.values(ArtStyleType)
