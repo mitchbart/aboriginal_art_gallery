@@ -53,19 +53,21 @@ model Artist {
 }
 
 model Artefact {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
-  artist        Artist?      @relation(fields: [artistId], references: [id])
-  artistId      String?      @db.ObjectId
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  artist       Artist?      @relation(fields: [artistId], references: [id])
+  artistId     String?      @db.ObjectId
+  creationYear Int?
+  description  String?
+  dimensions   Dimensions?
+  artStyle     ArtStyleType
+  imageUrl     String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // These fields aren't used, they need to remain in so Exhibitions can store artefacts
   exhibitions   Exhibition[] @relation(fields: [exhibitionIds], references: [id])
   exhibitionIds String[]     @db.ObjectId
-  creationYear  Int?
-  description   String?
-  dimensions    Dimensions?
-  artStyle      ArtStyleType
-  imageUrl      String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
 }
 
 // Type definition for dimensions
@@ -83,7 +85,7 @@ model Exhibition {
   theme        String?
   startDate    DateTime
   endDate      DateTime
-  //isCurrentlyActive Boolean //moved to computed field
+  //isCurrentlyActive Boolean //removed - moved to computed field
   location     String
   artefacts    Artefact[] @relation(fields: [artefactIds], references: [id])
   artefactIds  String[]   @db.ObjectId
@@ -91,4 +93,23 @@ model Exhibition {
   admissionFee Float?     @default(0)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+}
+
+// Enum for dimension units
+enum RoleType {
+  USER
+  CURATOR
+  ADMIN
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique
+  username       String   @unique
+  firstName      String?
+  lastName       String?
+  hashedPassword String
+  role           RoleType @default(USER)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

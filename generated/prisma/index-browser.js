@@ -132,13 +132,13 @@ exports.Prisma.ArtefactScalarFieldEnum = {
   id: 'id',
   title: 'title',
   artistId: 'artistId',
-  exhibitionIds: 'exhibitionIds',
   creationYear: 'creationYear',
   description: 'description',
   artStyle: 'artStyle',
   imageUrl: 'imageUrl',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  exhibitionIds: 'exhibitionIds'
 };
 
 exports.Prisma.ExhibitionScalarFieldEnum = {
@@ -152,6 +152,18 @@ exports.Prisma.ExhibitionScalarFieldEnum = {
   artefactIds: 'artefactIds',
   imageUrl: 'imageUrl',
   admissionFee: 'admissionFee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  username: 'username',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  hashedPassword: 'hashedPassword',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -179,6 +191,12 @@ exports.ArtStyleType = exports.$Enums.ArtStyleType = {
   TRADITIONAL: 'TRADITIONAL'
 };
 
+exports.RoleType = exports.$Enums.RoleType = {
+  USER: 'USER',
+  CURATOR: 'CURATOR',
+  ADMIN: 'ADMIN'
+};
+
 exports.DimensionUnit = exports.$Enums.DimensionUnit = {
   CM: 'CM',
   INCHES: 'INCHES',
@@ -188,7 +206,8 @@ exports.DimensionUnit = exports.$Enums.DimensionUnit = {
 exports.Prisma.ModelName = {
   Artist: 'Artist',
   Artefact: 'Artefact',
-  Exhibition: 'Exhibition'
+  Exhibition: 'Exhibition',
+  User: 'User'
 };
 
 /**

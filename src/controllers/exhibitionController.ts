@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import prisma from "../client";
+import { Request, Response } from 'express';
+import prisma from '../client';
 import { Prisma } from '../../generated/prisma';
 
 // Get all exhibitions
@@ -13,7 +13,7 @@ export async function getExhibitions(req: Request, res: Response) {
 
     res.json({
       status: true,
-      message: "Exhibitions successfully fetched",
+      message: 'Exhibitions successfully fetched',
       data: exhibitions,
     });
 
@@ -48,7 +48,7 @@ export async function getActiveExhibitions(req: Request, res: Response) {
   
     res.json({
       status: true,
-      message: "Active exhibitions successfully fetched",
+      message: 'Active exhibitions successfully fetched',
       data: activeExhibitions,
     });
 
@@ -77,7 +77,7 @@ export async function getExhibition(req: Request, res: Response) {
 
     res.json({
       status: true,
-      message: "Exhibition successfully fetched",
+      message: 'Exhibition successfully fetched',
       data: exhibition,
     });
 
@@ -109,7 +109,7 @@ export async function createExhibition(req: Request, res: Response) {
 
     res.status(201).json({
       status: true,
-      message: "Exhibition successfully created",
+      message: 'Exhibition successfully created',
       data: exhibition,
     });
 

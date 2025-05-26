@@ -1,7 +1,7 @@
 // Note - first controller made so comments and links more frequent in this file
 
-import { Request, Response } from "express";
-import prisma from "../client";
+import { Request, Response } from 'express';
+import prisma from '../client';
 import { ArtStyleType, Prisma } from '../../generated/prisma'; // For error types
 
 // Get all artists
@@ -17,7 +17,7 @@ export async function getArtists(req: Request, res: Response) {
     // Response contains all artists
     res.json({
       status: true,
-      message: "Artists successfully fetched",
+      message: 'Artists successfully fetched',
       data: artists,
     });
 
@@ -63,7 +63,7 @@ export async function  getArtistsByArtstyle(req: Request, res: Response) {
     // Response
     res.json({
       status: true,
-      message: "Artists using this style succesfully fetched",
+      message: 'Artists using this style succesfully fetched',
       data: artists,
     });
         
@@ -97,7 +97,7 @@ export async function getArtist(req: Request, res: Response) {
     // Response
     res.json({
       status: true,
-      message: "Artist successfully fetched",
+      message: 'Artist successfully fetched',
       data: artist,
     });
 
@@ -133,7 +133,7 @@ export async function createArtist(req: Request, res: Response) {
     // Return status 201 created
     res.status(201).json({
       status: true,
-      message: "Artist successfully created",
+      message: 'Artist successfully created',
       data: artist,
     });
     

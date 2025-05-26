@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import prisma from "../client";
-import { Prisma } from "../../generated/prisma";
+import { Request, Response } from 'express';
+import prisma from '../client';
+import { Prisma } from '../../generated/prisma';
 
 // Get all artefacts
 export async function getArtefacts(req: Request, res: Response) {
@@ -13,7 +13,7 @@ export async function getArtefacts(req: Request, res: Response) {
 
     res.json({
       status: true,
-      message: "Artefacts successfully fetched",
+      message: 'Artefacts successfully fetched',
       data: artefacts,
     });
 
@@ -42,7 +42,7 @@ export async function getArtefact(req: Request, res: Response) {
 
     res.json({
       status: true,
-      message: "Artefact successfully fetched",
+      message: 'Artefact successfully fetched',
       data: artefact,
     });
 
@@ -89,7 +89,7 @@ export async function getArtefactExhibitions(req: Request, res: Response) {
     // Response
     res.json({
       status: true,
-      message: "Exhibitions for this artefact successfully fetched",
+      message: 'Exhibitions for this artefact successfully fetched',
       data: exhibitions,
     });    
 
@@ -121,7 +121,7 @@ export async function createArtefact(req: Request, res: Response) {
     
     res.status(201).json({
       status: true,
-      message: "Artefact successfully created",
+      message: 'Artefact successfully created',
       data: artefact,
     });
 

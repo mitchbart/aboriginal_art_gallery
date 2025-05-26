@@ -99,7 +99,6 @@ model Exhibition {
 // Enum for dimension units
 enum RoleType {
   USER
-  MEMBER
   CURATOR
   ADMIN
 }
