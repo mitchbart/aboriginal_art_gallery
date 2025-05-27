@@ -107,6 +107,9 @@ export async function loginUser(req: Request, res: Response) {
       return;
     }
 
+    // Update so passwordash isnt returned here
+    // Is there a way to block it?
+
     res.json({
       status: true,
       message: 'User login successful',
@@ -131,3 +134,121 @@ export async function loginUser(req: Request, res: Response) {
     });
   }
 }
+
+// Update user details
+export async function updateUserDetails(req: Request, res: Response) {
+  try {
+    const { userid } = req.params;
+
+    // Update the user
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userid,
+      },
+      data: req.body,
+    });
+
+    // Response
+    res.json({
+      status: true,
+      message: 'User successfully updated',
+      data: updatedUser,
+    });
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error updating user:', e)
+      // Return 404 if user not found
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: e.code,
+        });
+        return;
+      }
+    }
+    
+    res.status(500).json({
+      status: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+// Update user email
+export async function updateUserEmail(req: Request, res: Response) {
+  try {
+    // New email and password provided in body
+    const { newEmail, password } = req.body;
+    // User id determined from params
+    const { userid } = req.params;
+    // Place new email into its own varaiable
+    const updateData = { email: newEmail }
+
+    // Check password is valid
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: userid,
+      },
+      omit: { hashedPassword: false } // Omitted globally by client
+    });
+
+    // Check password matches
+    const match = await bcrypt.compare(password, user.hashedPassword);
+
+    // Return 401 unauthorized if password incorrect
+    if (!match) {
+      res.status(401).json({
+        status: false,
+        message: 'Invalid password'
+      });
+      return;
+    }
+
+    // Update the user email
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userid,
+      },
+      data: updateData,
+    });
+
+    res.json({
+      status: true,
+      message: 'User email update successful',
+      data: updatedUser
+    });
+
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Error finding user:', e)
+      if (e.code === 'P2025') {
+        res.status(404).json({
+          status: false,
+          message: 'User not found',
+        });
+        return;
+      }
+      // Catch if email not unique
+      // https://www.prisma.io/docs/orm/reference/error-reference
+      if (e.code === 'P2002') {
+        res.status(409).json({
+          status: false,
+          message: 'Account with this email already exists',
+        });
+        return;
+      }
+    }
+    
+    res.status(500).json({
+      status: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+
+// Update user password
+
+
+// Delete user

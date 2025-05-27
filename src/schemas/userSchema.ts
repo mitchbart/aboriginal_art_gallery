@@ -14,9 +14,28 @@ export const registerUserSchema = z.object({
   role: roleEnum.optional().default(RoleType.USER),
 }).strict();
 
-
 // Login schema
 export const loginUserSchema = z.object({
   email: z.string().email("Invalid email format").min(1),
   password: z.string().min(1, "Password is required"),
 }).strict();
+
+// Update user schema - omit email and password
+export const updateUserSchema = registerUserSchema.omit({
+  email: true,
+  hashedPassword: true,
+})
+
+// Login schema
+export const updateEmailSchema = z.object({
+  newEmail: z.string().email("Invalid email format").min(1),
+  password: z.string().min(1, "Password is required"),
+}).strict();
+
+// Update login schema - omit other details
+// export const updateLoginSchema = registerUserSchema.omit({
+//   username: true,
+//   firstName: true,
+//   lastName: true,
+//   role: true,
+// })
