@@ -1,15 +1,11 @@
 import { Request, Response } from 'express';
-import prisma from '../client';
 import { Prisma } from '../../generated/prisma';
+import { ExhibitionService } from '../services/exhibitionService';
 
 // Get all exhibitions
 export async function getExhibitions(req: Request, res: Response) {
   try {
-    const exhibitions = await prisma.exhibition.findMany({
-      include: {
-        artefacts: true,
-      },
-    });
+    const exhibitions = await ExhibitionService.getAllExhibitions();
 
     res.json({
       status: true,
@@ -29,22 +25,8 @@ export async function getExhibitions(req: Request, res: Response) {
 // Get currently active exhibitions
 export async function getActiveExhibitions(req: Request, res: Response) {
   try {
-    // Get the current date
-    const now = new Date();
-
-    // Get active exhibitions
-    const activeExhibitions = await prisma.exhibition.findMany({
-      where: {
-        // Prisma query syntax to check if current date between startDate and endDate
-        AND: [
-          { startDate: { lte: now} },
-          { endDate: { gte: now }},
-        ],
-      },
-      include: {
-        artefacts: true,
-      },
-    });
+    const now = new Date(); // Get the current date
+    const activeExhibitions = await ExhibitionService.getActiveExhibitions(now);
   
     res.json({
       status: true,
@@ -65,15 +47,7 @@ export async function getActiveExhibitions(req: Request, res: Response) {
 export async function getExhibition(req: Request, res: Response) {
   try {
     const { exhibitionid } = req.params;
-
-    const exhibition = await prisma.exhibition.findUniqueOrThrow({
-      where: {
-        id: exhibitionid,
-      },
-      include: {
-        artefacts: true,
-      },
-    });
+    const exhibition = await ExhibitionService.getExhibition(exhibitionid);
 
     res.json({
       status: true,
@@ -103,9 +77,7 @@ export async function getExhibition(req: Request, res: Response) {
 // Add a new exhibition
 export async function createExhibition(req: Request, res: Response) {
   try {
-    const exhibition = await prisma.exhibition.create({
-      data: req.body,
-    });
+    const exhibition = await ExhibitionService.createExhibition(req.body);
 
     res.status(201).json({
       status: true,
@@ -126,13 +98,7 @@ export async function createExhibition(req: Request, res: Response) {
 export async function updateExhibition(req: Request, res: Response) {
   try {
     const { exhibitionid } = req.params;
-
-    const updatedExhibition = await prisma.exhibition.update({
-      where: {
-        id: exhibitionid,
-      },
-      data: req.body,
-    });
+    const updatedExhibition = await ExhibitionService.updateExhibition(exhibitionid, req.body);
 
     res.json({
       status: true,
@@ -163,12 +129,7 @@ export async function updateExhibition(req: Request, res: Response) {
 export async function deleteExhibition(req: Request, res: Response) {
   try {
     const { exhibitionid } = req.params;
-
-    await prisma.exhibition.delete({
-      where: {
-        id: exhibitionid,
-      }
-    });
+    await ExhibitionService.deleteExhibition(exhibitionid);
 
     res.json({
       status: true,
