@@ -1,15 +1,11 @@
 import { Request, Response } from 'express';
-import prisma from '../client';
 import { Prisma } from '../../generated/prisma';
+import { ArtefactService } from '../services/artefactService';
 
 // Get all artefacts
 export async function getArtefacts(req: Request, res: Response) {
   try {
-    const artefacts = await prisma.artefact.findMany({
-      include: {
-        artist: true,
-      },
-    });
+    const artefacts = await ArtefactService.getAllArtefacts();
 
     res.json({
       status: true,
@@ -30,15 +26,7 @@ export async function getArtefacts(req: Request, res: Response) {
 export async function getArtefact(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
-
-    const artefact = await prisma.artefact.findUniqueOrThrow({
-      where: {
-        id: artefactid,
-      },
-      include: {
-        artist: true,
-      }
-    });
+    const artefact = await ArtefactService.getArtefact(artefactid);
 
     res.json({
       status: true,
@@ -65,28 +53,17 @@ export async function getArtefact(req: Request, res: Response) {
   }
 }
 
-// Get an artefacts exhibitions
+// Get the exhibitions an artefact has appeared in
 export async function getArtefactExhibitions(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
 
-    // Check the artefact exists
-    const artefact = await prisma.artefact.findUniqueOrThrow({
-      where: {
-        id: artefactid,
-      }
-    });
+    // Check the artefact exists - throws error if not found
+    await ArtefactService.getArtefact(artefactid);
 
     // Get the exhibitions that include the artefact
-    const exhibitions = await prisma.exhibition.findMany({
-      where: {
-        artefactIds: {
-          has: artefactid,
-        }
-      }
-    });
+    const exhibitions = await ArtefactService.getArtefactExhibitions(artefactid);
 
-    // Response
     res.json({
       status: true,
       message: 'Exhibitions for this artefact successfully fetched',
@@ -115,9 +92,7 @@ export async function getArtefactExhibitions(req: Request, res: Response) {
 // Add a new artefact
 export async function createArtefact(req: Request, res: Response) {
   try {
-    const artefact = await prisma.artefact.create({
-      data: req.body,
-    });
+    const artefact = await ArtefactService.createArtefact(req.body);
     
     res.status(201).json({
       status: true,
@@ -138,13 +113,7 @@ export async function createArtefact(req: Request, res: Response) {
 export async function updateArtefact(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
-
-    const updatedArtefact = await prisma.artefact.update({
-      where: {
-        id: artefactid,
-      },
-      data: req.body,
-    });
+    const updatedArtefact = await ArtefactService.updateArtefact(artefactid, req.body);
 
     res.json({
       status: true,
@@ -175,12 +144,7 @@ export async function updateArtefact(req: Request, res: Response) {
 export async function deleteArtefact(req: Request, res: Response) {
   try {
     const { artefactid } = req.params;
-
-    await prisma.artefact.delete({
-      where: {
-        id: artefactid,
-      }
-    });
+    await ArtefactService.deleteArtefact(artefactid);
 
     res.json({
       status: true,
