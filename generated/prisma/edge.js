@@ -220,12 +220,11 @@ const config = {
     "db"
   ],
   "activeProvider": "mongodb",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "mongodb+srv://mitchellbartolo:margot12@cluster0.yiyznj8.mongodb.net/aboriginalArtGalleryDatabase"
       }
     }
   },

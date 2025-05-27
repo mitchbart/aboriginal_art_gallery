@@ -26,16 +26,8 @@ export const updateUserSchema = registerUserSchema.omit({
   hashedPassword: true,
 })
 
-// Login schema
+// Email update schema
 export const updateEmailSchema = z.object({
   newEmail: z.string().email("Invalid email format").min(1),
   password: z.string().min(1, "Password is required"),
 }).strict();
-
-// Update login schema - omit other details
-// export const updateLoginSchema = registerUserSchema.omit({
-//   username: true,
-//   firstName: true,
-//   lastName: true,
-//   role: true,
-// })
