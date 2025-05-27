@@ -31,3 +31,9 @@ export const updateEmailSchema = z.object({
   newEmail: z.string().email("Invalid email format").min(1),
   password: z.string().min(1, "Password is required"),
 }).strict();
+
+// Password update schema
+export const updatePasswordSchema = z.object({
+  newPassword: z.string().min(1, "New password is required"),
+  password: z.string().min(1, "Password is required"),
+}).strict();
