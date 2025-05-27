@@ -69,9 +69,10 @@ export async function registerUser(req: Request, res: Response) {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       console.error('Prisma error:', e)
-      // Unique constaint failure
+      // Unique constraint failure, return 409 conflict
+      // https://www.prisma.io/docs/orm/reference/error-reference
       if (e.code === 'P2002') {
-        res.status(404).json({
+        res.status(409).json({
           status: false,
           message: 'User name and email must be unique',
         });
@@ -150,8 +151,9 @@ export async function updateUserDetails(req: Request, res: Response) {
         });
         return;
       }
+      // Unique constraint failure, return 409 conflict
       if (e.code === 'P2002') {
-        res.status(404).json({
+        res.status(409).json({
           status: false,
           message: 'User name must be unique',
         });
@@ -210,7 +212,7 @@ export async function updateUserEmail(req: Request, res: Response) {
         return;
       }
       // Catch if email not unique
-      // https://www.prisma.io/docs/orm/reference/error-reference
+      // Unique constraint failure, return 409 conflict
       if (e.code === 'P2002') {
         res.status(409).json({
           status: false,
