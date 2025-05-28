@@ -7,6 +7,7 @@ const roleEnum = z.nativeEnum(RoleType);
 // Registration schema
 export const registerUserSchema = z.object({
   email: z.string().email("Invalid email format").min(1).max(100),
+  // Username regex - https://stackoverflow.com/questions/21540624/javascript-regex-only-alphabet-number-and-underscore/21540683
   username: z.string().min(3, "Username must be at least 3 characters").max(50).regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
   firstName: z.string().min(1).max(50).optional().nullable(),
   lastName: z.string().min(1).max(50).optional().nullable(),

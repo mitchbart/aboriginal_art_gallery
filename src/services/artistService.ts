@@ -1,4 +1,4 @@
-import { ArtStyleType } from '../../generated/prisma';
+import { Prisma, ArtStyleType } from '../../generated/prisma';
 import prisma from '../client';
 
 export class ArtistService {
@@ -38,14 +38,14 @@ export class ArtistService {
   }
 
   // Create a new artist
-  static async createArtist(artistData: any) {
+  static async createArtist(artistData: Prisma.ArtistCreateInput) {
     return await prisma.artist.create({
       data: artistData
     });
   }
 
   // Update an artist
-  static async updateArtist(id: string, updateData: any) {
+  static async updateArtist(id: string, updateData: Prisma.ArtistUpdateInput) {
     return await prisma.artist.update({
       where: { id },
       data: updateData

@@ -11,6 +11,7 @@ indexRoute.get('', async (req, res) => {
   res.json({ message: 'Hello there' });
 });
 
+// Add all routes
 indexRoute.use('/artists', artistRoute);
 indexRoute.use('/artefacts', artefactRoute);
 indexRoute.use('/exhibitions', exhibitionRoute);

@@ -1,4 +1,5 @@
 import prisma from '../client';
+import { Prisma } from '../../generated/prisma';
 
 export class ExhibitionService {
 
@@ -38,14 +39,14 @@ export class ExhibitionService {
   }
 
   // Create a new exhibition
-  static async createExhibition(exhibitionData: any) {
+  static async createExhibition(exhibitionData: Prisma.ExhibitionCreateInput) {
     return await prisma.exhibition.create({
       data: exhibitionData
     });
   }
 
   // Update an exhibition
-  static async updateExhibition(id: string, updateData: any) {
+  static async updateExhibition(id: string, updateData: Prisma.ExhibitionUpdateInput) {
     return await prisma.exhibition.update({
       where: { id },
       data: updateData

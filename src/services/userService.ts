@@ -1,5 +1,6 @@
 import prisma from '../client';
 import bcrypt from 'bcrypt';
+import { Prisma } from '../../generated/prisma';
 
 export class UserService {
   
@@ -32,14 +33,14 @@ export class UserService {
   }
 
   // Create user
-  static async createUser(userData: any) {
+  static async createUser(userData: Prisma.UserCreateInput) {
     return await prisma.user.create({
       data: userData
     });
   }
 
   // Update user
-  static async updateUser(id: string, updateData: any) {
+  static async updateUser(id: string, updateData: Prisma.UserUpdateInput) {
     return await prisma.user.update({
       where: { id },
       data: updateData

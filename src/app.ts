@@ -5,18 +5,8 @@ import indexRoute from './routes';
 // Initiate express
 const app = Express();
 
-// Cors configuration
-const corsOptions = {
-  origin: true, // Production only, allow all origins
-  credentials: true, // Allow cookies and authentication headers
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['X-Total-Count'], // Headers that the browser is allowed to access
-  maxAge: 86400 // Cache preflight requests for 24 hours
-}
-
-// Apply cors
-app.use(cors(corsOptions));
+// Apply cors, configuration not needed until a frontend is made
+app.use(cors());
 
 // Body parsing middleware
 app.use(Express.json());

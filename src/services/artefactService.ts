@@ -1,4 +1,5 @@
 import prisma from '../client';
+import { Prisma } from '../../generated/prisma';
 
 export class ArtefactService {
 
@@ -26,14 +27,14 @@ export class ArtefactService {
   }
 
   // Create a new artefact
-  static async createArtefact(artefactData: any) {
+  static async createArtefact(artefactData: Prisma.ArtefactCreateInput) {
     return await prisma.artefact.create({
       data: artefactData
     });
   }
 
   // Update an artefact
-  static async updateArtefact(id: string, updateData: any) {
+  static async updateArtefact(id: string, updateData: Prisma.ArtefactUpdateInput) {
     return await prisma.artefact.update({
       where: { id },
       data: updateData
