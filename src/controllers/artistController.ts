@@ -18,7 +18,7 @@ export async function getArtists(req: Request, res: Response) {
 
   } catch (e) {
     // Catch any other errors and output to console
-    console.error(e);
+    // console.error(e);
     res.status(500).json({
       status: false,
       message: 'Internal server error'

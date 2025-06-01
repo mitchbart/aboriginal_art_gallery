@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/userService';
 import { Prisma } from '../../generated/prisma';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Get all users
 export async function getUsers(req: Request, res: Response) {
@@ -105,8 +108,41 @@ export async function loginUser(req: Request, res: Response) {
       return;
     }
 
-    // Return 204 no content
-    res.status(204).json();
+    // JWT auth - started adding but havent finished, come back this if time
+
+    // Generate JWT token
+    // const jwtSecret = process.env.JWT_SECRET;
+    // if (!jwtSecret) {
+    //   throw new Error('JWT_SECRET environment variable must be configured');
+    // }
+
+    // const payload = {
+    //   userId: user.id,
+    //   email: user.email,
+    //   role: user.role
+    // }
+
+    // const token = jwt.sign(payload, jwtSecret, {
+    //   expiresIn: '24h'
+    // });
+
+    // Return successful login
+    res.json({
+      status: true,
+      message: 'Login successful',
+      data: {
+        //token,
+        // Choose user fields so hashed password isnt returned
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role
+        }
+      }
+    });
 
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

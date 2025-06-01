@@ -19,7 +19,7 @@ export class ExhibitionService {
         // Prisma query syntax to check if current date between startDate and endDate
         AND: [
           { startDate: { lte: now} },
-          { endDate: { gte: now }},
+          { endDate: { gte: now } },
         ],
       },
       include: {
